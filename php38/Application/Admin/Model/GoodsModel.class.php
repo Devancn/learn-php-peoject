@@ -23,7 +23,7 @@ class GoodsModel extends Model{
 		if(isset($_FILES['logo']) && $_FILES['logo']['error'] == 0){
 			//上传图片
 			$upload = new \Think\Upload();// 实例化上传类,如果提示上传目录不存在就在Upload(array('maxSize'=>  2 * 1024 * 1024 .....))里面传递一个数组
-			$upload->maxSize   =     2 * 1024 * 1024 ;// 设置附件上传大小(2M)
+			$upload->maxSize   =     2 * 1024 * 1024 ;// 设置附件上传大小(2M)一定小于php.ini中的设置
 			$upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
 			$upload->rootPath  =     './Public/Uploads/'; // 设置附件上传根目录
 			$upload->savePath  =     'Goods/'; // 设置附件上传（子）目录

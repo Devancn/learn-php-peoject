@@ -1,5 +1,6 @@
 <?php
 return array(
+	'DEFAULT_FILTER' =>  'trim,htmlspecialchars', // 默认参数过滤方法 用于I函数...
 	'DB_TYPE' => 'mysql',//mysql,mysqli,pdo
 	'DB_HOST '=> '127.0.0.1',
 	'DB_NAME' => 'php38',

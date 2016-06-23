@@ -19,3 +19,5 @@ create table php38_goods
   key addtime(addtime),
   key is_on_sale(is_on_sale)
 )engine=myisam default charset=utf8;
+-- 修改字段名
+alter table php38_goods change column smg_logo sm_logo  varchar(150) not null default '' comment '小图片';

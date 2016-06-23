@@ -3,8 +3,8 @@
 <head>
     <title>ECSHOP 管理中心 - 添加新商品 </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link href="/php38/Public/Admin/Styles/general.css" rel="stylesheet" type="text/css" />
-    <link href="/php38/Public/Admin/Styles/main.css" rel="stylesheet" type="text/css" />
+    <link href="/Public/Admin/Styles/general.css" rel="stylesheet" type="text/css" />
+    <link href="/Public/Admin/Styles/main.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <h1>
@@ -22,7 +22,7 @@
         </p>
     </div>
     <div id="tabbody-div">
-        <form enctype="multipart/form-data" action="/php38/index.php/Admin/Goods/add" method="post">
+        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/add" method="post">
             <table width="90%" id="general-table" align="center">
                 <tr>
                     <td class="label">商品名称：</td>

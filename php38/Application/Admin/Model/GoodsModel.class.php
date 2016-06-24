@@ -58,15 +58,50 @@ class GoodsModel extends Model{
 	}
 	//获取袋翻页的商品数据
 	public function search(){
+		/************** 搜索 **************/
+		$where=array(); //where条件的数组
+		//商品名称
+		$gn=I('get.gn');
+		if($gn){
+			$where['goods_name'] = array('like',"%$gn%"); //goods_name LIKE '%$gn%'
+		}
+		//价格
+		$fp=I('get.fp');
+		$tp=I('get.tp');
+		if($fp && $tp){
+			$where['shop_price']=array('between',array($fp,$tp));
+		}else if($fp){
+			$where['shop_price']=array('egt',$fp); //大于等于 shop_price>=$fp
+		}else if($tp){
+			$where['shop_price']=array('elt',$tp); //小于等于 shop_price<=$fp
+		}
+		//添加时间
+		$ft=I('get.ft');
+		$et=I('get.et');
+		if($ft && $et){
+			$where['addtime']=array('between',array(strtotime("$ft 00:00:00"),strtotime("$et 23:59:59")));
+		}else if($ft){
+			$where['addtime']=array('egt',strtotime("$ft 00:00:00")); //大于等于 shop_price>=$fp
+		}else if($et){
+			$where['addtime']=array('elt',strtotime("$et 23:59:59")); //小于等于 shop_price<=$fp
+		}
+		//是否上架
+		$ios=I('get.ios');
+		if($ios == '是' || $ios == '否'){
+			$where['is_on_sale'] = array('eq',$ios); //goods_name LIKE '%$gn%'
+		}
 		/************** 翻页 **************/
 		//取出总得记录数
-		$count=$this->count();
-		$Page = new \Think\Page($count,15);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+		$count=$this->where($where)->count();
+		$Page = new \Think\Page($count,3);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+		//设置上一页和下一页的字符串
+		$Page->setConfig('prev','上一页');
+		$Page->setConfig('next','下一页');
 		//生成翻页字符串,这个字符串要在页面中显示出来
 		$pageString= $Page->show();// 分页显示输出
 
 		/************** 取某一页的数据 **************/
-		$data=$this->limit($Page->firstRow.','.$Page->listRows)->select();
+		$data=$this->where($where)->limit($Page->firstRow.','.$Page->listRows)->select();
 
 		return array(
 			'data' => $data,

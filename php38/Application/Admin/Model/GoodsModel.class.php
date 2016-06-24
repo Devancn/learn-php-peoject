@@ -56,6 +56,23 @@ class GoodsModel extends Model{
 			}
 		}
 	}
+	//获取袋翻页的商品数据
+	public function search(){
+		/************** 翻页 **************/
+		//取出总得记录数
+		$count=$this->count();
+		$Page = new \Think\Page($count,15);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+		//生成翻页字符串,这个字符串要在页面中显示出来
+		$pageString= $Page->show();// 分页显示输出
+
+		/************** 取某一页的数据 **************/
+		$data=$this->limit($Page->firstRow.','.$Page->listRows)->select();
+
+		return array(
+			'data' => $data,
+			'page' => $pageString
+		);
+	}
 
 	//执行添加方法之后调用这个方法
 	//$data：添加之后的数据,$data['id']：新添加记录的ID

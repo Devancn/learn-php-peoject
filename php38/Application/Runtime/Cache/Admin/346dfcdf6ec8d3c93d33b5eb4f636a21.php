@@ -3,14 +3,14 @@
 <head>
     <title>ECSHOP 管理中心 - 添加新商品 </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link href="/php38/Public/Admin/Styles/general.css" rel="stylesheet" type="text/css" />
-    <link href="/php38/Public/Admin/Styles/main.css" rel="stylesheet" type="text/css" />
+    <link href="/Public/Admin/Styles/general.css" rel="stylesheet" type="text/css" />
+    <link href="/Public/Admin/Styles/main.css" rel="stylesheet" type="text/css" />
     <!--在线编辑器-->
-    <link href="/php38/Public/umeditor1_2_2-utf8-php/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
-    <script type="text/javascript" src="/php38/Public/umeditor1_2_2-utf8-php/third-party/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/php38/Public/umeditor1_2_2-utf8-php/umeditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/php38/Public/umeditor1_2_2-utf8-php/umeditor.min.js"></script>
-    <script type="text/javascript" src="/php38/Public/umeditor1_2_2-utf8-php/lang/zh-cn/zh-cn.js"></script>
+    <link href="/Public/umeditor1_2_2-utf8-php/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="/Public/umeditor1_2_2-utf8-php/third-party/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/Public/umeditor1_2_2-utf8-php/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/Public/umeditor1_2_2-utf8-php/umeditor.min.js"></script>
+    <script type="text/javascript" src="/Public/umeditor1_2_2-utf8-php/lang/zh-cn/zh-cn.js"></script>
 </head>
 <body>
 <h1>
@@ -28,7 +28,7 @@
         </p>
     </div>
     <div id="tabbody-div">
-        <form enctype="multipart/form-data" action="/php38/index.php/Admin/Goods/add" method="post">
+        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/add" method="post">
             <table width="90%" id="general-table" align="center">
                 <tr>
                     <td class="label">商品名称：</td>

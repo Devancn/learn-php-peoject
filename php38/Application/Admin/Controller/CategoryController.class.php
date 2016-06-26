@@ -6,13 +6,13 @@ class CategoryController extends Controller{
 	public function delete(){
 		//接收商品ID
 		$id=I('get.id');
-		$model=D('Goods');
+		$model=D('Category');
 		$model->delete($id);
 		if(FALSE !== $model->delete($id)){
 			$this->success('删除成功!');
 			exit;
 		}else{
-			$this->error('删除失败!');
+			$this->error($model->getError());
 		}
 	}
 	//列表页
@@ -41,28 +41,26 @@ class CategoryController extends Controller{
 		//IF里处理表单
 		if(IS_POST){
 			//2.生成模型
-			$model = D ('Goods');
+			$model = D ('Category');
 			//3.接收表单,根据模型中定义的规则验证表单\
 			//第二个参数:1.添加 2.修改
 			if($model->create(I('post.'),1)){
-				//6.表单中的数据插入到数据库中
 				if($model->add()){
-					//7.提示成功信息，并且在1秒之后跳转到商品列表页面
 					$this->success('添加成功',U('lst'));
-					//8.停止后面代码的执行
 					exit;
 				}
 			}
-			//4.获取失败的原因
 			$error=$model->getError();
-			//5.打印失败原因,并且3秒之后调回上一个页面
 			$this->error($error);
 		}
-		//1.显示添加商品的表单
+		//取出所有的分类制作下拉框
+		$catModel=D('Category');
+		$cateData=$catModel->getTree();
 
 		//设置页面信息
 		$this->assign(
 			array(
+				'catData' => $cateData,
 				'_page_title' => '添加商品',
 				'_page_btn_name' => '商品列表',
 				'_page_btn_link' => U('lst')
@@ -75,7 +73,7 @@ class CategoryController extends Controller{
 		//IF里处理表单
 		if(IS_POST){
 			//2.生成模型
-			$model = D ('Goods');
+			$model = D ('Category');
 			//3.接收表单,根据模型中定义的规则验证表单\
 			//第二个参数:1.添加 2.修改
 			if($model->create(I('post.'),2)){
@@ -94,15 +92,21 @@ class CategoryController extends Controller{
 			$this->error($error);
 		}
 		//先取出要修改的商品的信息
-		$id=I('get.id');//接收商品ID
-		$model = M('Goods');
-		$info=$model->find($id);//根据ID取出商品的信息
+		$id=I('get.id');//接收分类ID
+		$model = M('Category');
+		$info=$model->find($id);//根据ID取出分类的信息
 		$this->assign('info',$info);//分配到修改的表单
-		//1.显示添加商品的表单
+			//取出所有的分类制作下拉框
+			$catModel=D('Category');
+			$cateData=$catModel->getTree();
 
+		//取出当前分类的子分类
+		$children =$catModel->getChildren($id);
 		//设置页面信息
 		$this->assign(
 			array(
+				'children'=>$children,
+				'catData' => $cateData,
 				'_page_title' => '添加商品',
 				'_page_btn_name' => '商品列表',
 				'_page_btn_link' => U('lst?p='.I('get.p'))

@@ -5,6 +5,7 @@ drop table if exists php38_goods;
 create table php38_goods
 (
   id mediumint unsigned not null auto_increment comment 'ID',
+  cat_id mediumint unsigned not null  comment '主分类id',
   goods_name varchar(150) not null comment '商品名称',
   market_price decimal(10,2) not null comment '市场价格',
   shop_price decimal(10,2) not null comment '商城价格',
@@ -17,6 +18,7 @@ create table php38_goods
   primary key (id),
   key shop_price(shop_price),
   key addtime(addtime),
+  key cat_id(cat_id),
   key is_on_sale(is_on_sale)
 )engine=myisam default charset=utf8;
 -- 修改字段名
@@ -41,3 +43,15 @@ VALUES
 (5,'ThinkpadT500',4),
 (6,'ThinkpadT501',5),
 (7,'超极本',1);
+
+
+ALTER TABLE php38_goods  ADD cat_id mediumint unsigned not null  comment '主分类id';
+
+drop table if exists php38_goods_ext_cat;
+create table php38_goods_ext_cat
+(
+  goods_id mediumint unsigned not null  comment '商品ID',
+  cat_id mediumint unsigned not null  comment '分类ID',
+  KEY goods_id(goods_id),
+  KEY cat_id(cat_id)
+)engine=myisam default charset=utf8 comment '商品的扩展分类';

@@ -33,6 +33,34 @@
         <form enctype="multipart/form-data" action="/index.php/Admin/Goods/add.html" method="post">
             <table width="90%" id="general-table" align="center">
                 <tr>
+                    <td class="label">主分类：</td>
+                    <td>
+                        <select name="cat_id" >
+                            <option value="">选择分类</option>
+                            <?php foreach ($cateData as $k => $v):?>
+                            <option value="<?php echo $v['id']?>"><?php echo str_repeat('-',$v['level']*8).$v['cat_name'];?></option>
+                            <?php endforeach;?>
+                        </select>
+                        <span class="require-field">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">扩展分类：</td>
+    ·                   <td>
+                            <ul>
+                                <li>
+                                    <input type="button" value="[+]" onclick="add_li(this)">
+                                    <select name="ext_cat_id[]" >
+                                        <option value="">选择分类</option>
+                                        <?php foreach ($cateData as $k => $v):?>
+                                        <option value="<?php echo $v['id']?>"><?php echo str_repeat('-',$v['level']*8).$v['cat_name'];?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </li>
+                            </ul>
+                    </td>
+                </tr>
+                <tr>
                     <td class="label">商品名称：</td>
                     <td><input type="text" name="goods_name" value=""size="30" />
                         <span class="require-field">*</span></td>
@@ -83,6 +111,20 @@
         initialFrameWidth:'50%',
         initialFrameHeight:200
     });
+
+   function add_li(btn){
+       if($(btn).val() == '[+]'){
+           //先获取所在的ui标签
+           var ul=$(btn).parents('ul');
+           //把按钮所在的li吉隆一份,放到ui中
+           var newli=$(btn).parent().clone();
+           //把+变-
+           newli.find(":button").val('[-]');
+           ul.append(newli);
+       }else{
+           $(btn).parent().remove();
+       }
+   }
 </script>
 <div id="footer">
     共执行 3 个查询，用时 0.021251 秒，Gzip 已禁用，内存占用 2.194 MB<br />

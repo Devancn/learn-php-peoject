@@ -61,11 +61,14 @@ class GoodsController extends Controller{
 			//5.打印失败原因,并且3秒之后调回上一个页面
 			$this->error($error);
 		}
-		//1.显示添加商品的表单
+		//取出所有的分类制作下拉框
+		$catModel=D('Category');
+		$cateData=$catModel->getTree();
 
 		//设置页面信息
 		$this->assign(
 			array(
+				'cateData' => $cateData,
 				'_page_title' => '添加商品',
 				'_page_btn_name' => '商品列表',
 				'_page_btn_link' => U('lst')

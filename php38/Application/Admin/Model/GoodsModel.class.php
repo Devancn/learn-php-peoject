@@ -3,11 +3,12 @@ namespace Admin\Model;
 use Think\Model;
 class GoodsModel extends Model{
 	//设置添加时表单中允许接收的字段【安全】
-	protected $insertFields='goods_name,market_price,shop_price,goods_desc,is_on_sale';
+	protected $insertFields='goods_name,market_price,shop_price,goods_desc,is_on_sale,cat_id';
 	//设置修改时表单中允许接收的字段【安全】
-	protected $updateFields='id,goods_name,market_price,shop_price,goods_desc,is_on_sale';
+	protected $updateFields='id,goods_name,market_price,shop_price,goods_desc,is_on_sale,cat_id';
 	//定义表单验证规则
 	protected $_validate=array(
+		array('cat_id','require','必须要选择一个主分类',1),
 		array('goods_name','require','商品名称不能为空',1),
 		array('market_price','currency','市场价格必须是货币类型!',1),
 		array('shop_price','currency','本店价格必须是货币类型',1),
@@ -111,8 +112,22 @@ class GoodsModel extends Model{
 
 	//执行添加方法之后调用这个方法
 	//$data：添加之后的数据,$data['id']：新添加记录的ID
-	protected function _after_inert($data,$option){
-
+	protected function _after_insert($data,$option){
+		/********** 处理表单中扩展分类的代码 ***************/
+		$ecid=I('post.ext_cat_id');
+		if($ecid){
+			// 生成中间表的模型
+			$gcModel = M('goods_ext_cat');
+			foreach ($ecid as $k => $v){
+				//如果没有选择分类就跳过
+				if(empty($v))
+					continue;
+				$gcModel->add(array(
+					'goods_id' => $data['id'],
+					'cat_id'  => $v,
+				));
+			}
+		}
 	}
 
 	//执行修改方法之前调用这个方法

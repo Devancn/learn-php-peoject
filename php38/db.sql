@@ -21,3 +21,23 @@ create table php38_goods
 )engine=myisam default charset=utf8;
 -- 修改字段名
 alter table php38_goods change column smg_logo sm_logo  varchar(150) not null default '' comment '小图片';
+
+
+drop table if exists php38_category;
+create table php38_category
+(
+  id mediumint unsigned not null auto_increment comment 'ID',
+  cat_name varchar(150) not null comment '分类名称',
+  parent_id mediumint unsigned not null default '0' comment '上级分类ID,0:代表顶级分类',
+  primary key (id)
+)engine=myisam default charset=utf8;
+
+INSERT INTO php38_category
+VALUES
+(1,'笔记本',0),
+(2,'本',0),
+(3,'手机',0),
+(4,'Thinkpad',1),
+(5,'ThinkpadT500',4),
+(6,'ThinkpadT501',5),
+(7,'超极本',1);

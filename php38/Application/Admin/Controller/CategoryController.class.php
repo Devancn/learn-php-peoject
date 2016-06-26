@@ -1,7 +1,7 @@
 <?php
 namespace Admin\Controller;
 use Think\Controller;
-class GoodsController extends Controller{
+class CategoryController extends Controller{
 	//删除
 	public function delete(){
 		//接收商品ID
@@ -17,21 +17,18 @@ class GoodsController extends Controller{
 	}
 	//列表页
 	public function lst(){
-		$model = D ('Goods');
+		$model = D ('Category');
 		//获取数据以及翻页字符串
-		$data = $model -> search();
-		$this->assign(array(
-			'data' => $data['data'],
-			'page' => $data['page']
-		));
+		$data = $model ->getTree();;
+		$this->assign('data',$data);
 
 		//$this->assign('data',$data['data']);
 		//$this->assign('data',$data['page']);
 		//设置页面信息
 		$this->assign(
 			array(
-				'_page_title' => '商品列表',
-				'_page_btn_name' => '添加商品',
+				'_page_title' => '分类列表',
+				'_page_btn_name' => '添加分类',
 				'_page_btn_link' => U('add')
 			)
 		);

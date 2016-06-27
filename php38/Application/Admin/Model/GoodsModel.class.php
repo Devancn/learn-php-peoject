@@ -64,27 +64,27 @@ class GoodsModel extends Model{
 		//商品名称
 		$gn=I('get.gn');
 		if($gn){
-			$where['goods_name'] = array('like',"%$gn%"); //goods_name LIKE '%$gn%'
+			$where['a.goods_name'] = array('like',"%$gn%"); //goods_name LIKE '%$gn%'
 		}
 		//价格
 		$fp=I('get.fp');
 		$tp=I('get.tp');
 		if($fp && $tp){
-			$where['shop_price']=array('between',array($fp,$tp));
+			$where['a.shop_price']=array('between',array($fp,$tp));
 		}else if($fp){
-			$where['shop_price']=array('egt',$fp); //大于等于 shop_price>=$fp
+			$where['a.shop_price']=array('egt',$fp); //大于等于 shop_price>=$fp
 		}else if($tp){
-			$where['shop_price']=array('elt',$tp); //小于等于 shop_price<=$fp
+			$where['a.shop_price']=array('elt',$tp); //小于等于 shop_price<=$fp
 		}
 		//添加时间
 		$ft=I('get.ft');
 		$et=I('get.et');
 		if($ft && $et){
-			$where['addtime']=array('between',array(strtotime("$ft 00:00:00"),strtotime("$et 23:59:59")));
+			$where['a.addtime']=array('between',array(strtotime("$ft 00:00:00"),strtotime("$et 23:59:59")));
 		}else if($ft){
-			$where['addtime']=array('egt',strtotime("$ft 00:00:00")); //大于等于 shop_price>=$fp
+			$where['a.addtime']=array('egt',strtotime("$ft 00:00:00")); //大于等于 shop_price>=$fp
 		}else if($et){
-			$where['addtime']=array('elt',strtotime("$et 23:59:59")); //小于等于 shop_price<=$fp
+			$where['a.addtime']=array('elt',strtotime("$et 23:59:59")); //小于等于 shop_price<=$fp
 		}
 		//是否上架
 		$ios=I('get.ios');
@@ -102,7 +102,23 @@ class GoodsModel extends Model{
 		$pageString= $Page->show();// 分页显示输出
 
 		/************** 取某一页的数据 **************/
-		$data=$this->where($where)->limit($Page->firstRow.','.$Page->listRows)->select();
+		/**
+		 * SELECT a.*,b.cat_name,GROUP_CONCAT(d.cat_name) ext_cat_name
+		 * FROM php38_goods a
+		 * LEFT JOIN php38_category b ON a.cat_id=b.id
+		 * LEFT JOIN php38_goods_ext_cat c ON a.id=c.goods_id
+		 * LEFT JOIN php38_category d ON c.cat_id=d.id
+		 * GROUP BY a.id
+		 */
+		$data=$this->where($where)->alias('a')
+			->field('a.*,b.cat_name,GROUP_CONCAT(d.cat_name SEPARATOR "<br />") ext_cat_name')
+			->join('LEFT JOIN php38_category b ON a.cat_id=b.id
+					LEFT JOIN php38_goods_ext_cat c ON a.id=c.goods_id
+					LEFT JOIN php38_category d ON c.cat_id=d.id
+			')
+			->limit($Page->firstRow.','.$Page->listRows)
+			->group('a.id')
+			->select();
 
 		return array(
 			'data' => $data,

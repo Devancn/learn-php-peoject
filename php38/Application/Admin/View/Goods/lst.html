@@ -29,6 +29,8 @@
         <table cellpadding="3" cellspacing="1">
             <tr>
                 <th>id</th>
+                <th>主分类</th>
+                <th>扩展分类</th>
                 <th>logo</th>
                 <th>商品名称</th>
                 <th>市场价格</th>
@@ -40,6 +42,8 @@
             <?php foreach ($data as $k => $v): ?>
             <tr>
                 <td><?php echo $v['id']; ?></td>
+                <td><?php echo $v['cat_name'];?></td>
+                <td><?php echo $v['ext_cat_name'];?></td>
                 <td><img src="/Public/Uploads/<?php echo $v['sm_logo']; ?>" /></td>
                 <td><?php echo $v['goods_name']; ?></td>
                 <td><?php echo $v['market_price']; ?></td>

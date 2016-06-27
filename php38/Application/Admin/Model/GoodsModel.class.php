@@ -132,6 +132,24 @@ class GoodsModel extends Model{
 
 	//执行修改方法之前调用这个方法
 	protected function _before_update(&$data,$option){
+		/********** 处理表单中扩展分类的代码 ***************/
+		$id=I('post.id');
+		$ecid=I('post.ext_cat_id');
+		// 生成中间表的模型
+		$gcModel = M('goods_ext_cat');
+		//先清空原扩展分类数据
+		$gcModel->where(array('goods_id' => array('eq',$id)))->delete();
+		if($ecid){
+			foreach ($ecid as $k => $v){
+				//如果没有选择分类就跳过
+				if(empty($v))
+					continue;
+				$gcModel->add(array(
+					'goods_id' => $id,
+					'cat_id'  => $v,
+				));
+			}
+		}
 		//上传图片
 		//判断用户有没有选择图片
 		if(isset($_FILES['logo']) && $_FILES['logo']['error'] == 0){
@@ -197,6 +215,10 @@ class GoodsModel extends Model{
 			unlink('./Public/Uploads/'.$logo['sm_logo']);
 			unlink('./Public/Uploads/'.$logo['mid_logo']);
 		}
+		/********** 删除扩展分类中对应的数据 *************/
+		$gcModel = M('goods_ext_cat');
+		//因为这是调用的另一个模型的delete方法,那么在删除之前就先调用另一个的_before_delete
+		$gcModel->where(array('goods_id'=> array('eq',$id)))->delete(); //eq 等于的意思
 	}
 
 	//执行删除方法之后调用这个方法

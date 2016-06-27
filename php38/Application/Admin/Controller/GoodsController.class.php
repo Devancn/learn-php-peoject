@@ -104,11 +104,17 @@ class GoodsController extends Controller{
 		$model = M('Goods');
 		$info=$model->find($id);//根据ID取出商品的信息
 		$this->assign('info',$info);//分配到修改的表单
-		//1.显示添加商品的表单
+		//取出所有的分类制作下拉框
+		$catModel=D('Category');
+		$cateData=$catModel->getTree();
 
+		$gcModel=M('goods_ext_cat');
+		$gcData = $gcModel->field('cat_id')->where(array('goods_id' => array('eq',$id)))->select();
 		//设置页面信息
 		$this->assign(
 			array(
+				'gcData' => $gcData,
+				'cateData'=> $cateData,
 				'_page_title' => '添加商品',
 				'_page_btn_name' => '商品列表',
 				'_page_btn_link' => U('lst?p='.I('get.p'))

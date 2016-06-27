@@ -91,10 +91,32 @@ class GoodsModel extends Model{
 		if($ios == '是' || $ios == '否'){
 			$where['is_on_sale'] = array('eq',$ios); //goods_name LIKE '%$gn%'
 		}
+		//商品分类
+		$catId=I('get.cat_id');
+		if($catId){
+			//先取出这个分类所有子分类的ID
+			$catModel=D('Category');
+			$children=$catModel->getChildren($catId);
+			//所父分类也放到这个数组中
+			$children[]=$catId;
+			$children=implode(',',$children);
+			//搜索这些分类下的商品[主分类和扩展分类]
+			//$where['a.cat_id'] = array('in',$children);
+			//扩展分类
+			//先查询商品分类表,根据分类的ID取出这个如那分类下所有商品的ID
+			$gcModel = M('goods_ext_cat');
+			$gids=$gcModel->field('GROUP_CONCAT(goods_id) gids')->where(array(
+				'cat_id' => array('eq',$catId),
+			))->find();
+			//根据商品ID取出商品
+			//$where['a.id'] = array('in',$gids['gids']);
+			//主分类的条件的扩展分类的条件以OR的方式搜索
+			$where['a.cat_id'] = array('exp',"IN($children) OR a.id IN({$gids['gids']})"); //exp 表示写一个表达式
+		}
 		/************** 翻页 **************/
 		//取出总得记录数
-		$count=$this->where($where)->count();
-		$Page = new \Think\Page($count,3);// 实例化分页类 传入总记录数和每页显示的记录数(25)
+		$count=$this->alias('a')->where($where)->count();
+		$Page = new \Think\Page($count,15);// 实例化分页类 传入总记录数和每页显示的记录数(25)
 		//设置上一页和下一页的字符串
 		$Page->setConfig('prev','上一页');
 		$Page->setConfig('next','下一页');
@@ -111,7 +133,7 @@ class GoodsModel extends Model{
 		 * GROUP BY a.id
 		 */
 		$data=$this->where($where)->alias('a')
-			->field('a.*,b.cat_name,GROUP_CONCAT(d.cat_name SEPARATOR "<br />") ext_cat_name')
+			->field('a.*,b.cat_name,GROUP_CONCAT(d.cat_name SEPARATOR "<br>") ext_cat_name')
 			->join('LEFT JOIN php38_category b ON a.cat_id=b.id
 					LEFT JOIN php38_goods_ext_cat c ON a.id=c.goods_id
 					LEFT JOIN php38_category d ON c.cat_id=d.id

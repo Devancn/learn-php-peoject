@@ -36,7 +36,8 @@
                                 <option value="<?php echo $v['id']?>"><?php echo str_repeat('-',$v['level']*8).$v['cat_name'];?></option>
                             <?php endforeach;?>
                         </select>
-                        <span class="require-field">*</span></td>
+                        <span class="require-field">*</span>
+                    </td>
                 </tr>
                 <tr>
                     <td class="label">分类名称：</td>

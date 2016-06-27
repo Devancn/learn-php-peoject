@@ -55,3 +55,4 @@ create table php38_goods_ext_cat
   KEY goods_id(goods_id),
   KEY cat_id(cat_id)
 )engine=myisam default charset=utf8 comment '商品的扩展分类';
+

@@ -22,9 +22,18 @@
 <script type="text/javascript" language="javascript" src="/Public/datepicker/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="/Public/datepicker/jquery-ui-1.9.2.custom.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="/Public/datepicker/datepicker-zh_cn.js"></script>
+<!--搜索-->
 <div class="form-div">
     <form method="GET" action="<?php echo U('lst'); ?>" name="searchForm">
 	    <img src="/Public/Admin/Images/icon_search.gif" width="26" height="22" border="0" alt="search" />
+        商品分类:
+        <?php $catId = I('get.cat_id');?>
+        <select name="cat_id" >
+            <option value="">选择分类</option>
+            <?php foreach ($cateData as $k => $v): if($catId == $v['id']){ $select = 'selected="selected"'; }else{ $select=""; } ?>
+            <option <?php echo $select;?> value="<?php echo $v['id']?>"><?php echo str_repeat('-',$v['level']*8).$v['cat_name'];?></option>
+            <?php endforeach;?>
+        </select>
 	    商品名称：
 	    <input type="text" name="gn" size="15" value="<?php echo I('get.gn'); ?>" />
 	    本店价格：

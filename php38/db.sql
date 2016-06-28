@@ -56,3 +56,11 @@ create table php38_goods_ext_cat
   KEY cat_id(cat_id)
 )engine=myisam default charset=utf8 comment '商品的扩展分类';
 
+drop table if exists php38_admin;
+create table php38_admin
+(
+  id mediumint unsigned not null auto_increment comment 'ID',
+  username varchar(150) not null comment '用户名',
+  password char(32) not null comment '密码',
+  primary key (id)
+)engine=myisam default charset=utf8 comment '管理员';

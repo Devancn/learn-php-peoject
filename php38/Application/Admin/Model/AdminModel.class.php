@@ -15,9 +15,8 @@ class AdminModel extends Model
 	{
 		/**************************************** 搜索 ****************************************/
 		$where = array();
-		if($username = I('get.username')){
+		if($username = I('get.username'))
 			$where['username'] = array('like', "%$username%");
-		}
 		/************************************* 翻页 ****************************************/
 		$count = $this->alias('a')->where($where)->count();
 		$page = new \Think\Page($count, $pageSize);

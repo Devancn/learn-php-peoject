@@ -1112,3 +1112,7 @@ ERR: 1064:Erreur de syntaxe près de '-20,20' à la ligne 1
 ERR: 1064:Erreur de syntaxe près de '-20,20' à la ligne 1
  [ SQL语句 ] : SELECT * FROM php38_admin a GROUP BY a.id LIMIT -20,20  
 
+[ 2016-06-28T22:30:00+08:00 ] 127.0.0.1 /index.php/Admin/Goods/lst.html?cat_id=1&gn=&fp=&tp=&ios=0&ft=&et=
+ERR: 1064:Erreur de syntaxe près de ') LIMIT 1' à la ligne 1
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM php38_goods a WHERE a.cat_id IN(4,5,6,1) OR a.id IN() LIMIT 1  
+

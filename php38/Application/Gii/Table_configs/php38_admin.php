@@ -34,6 +34,6 @@ return array(
 	),
 	/**************** 搜索字段的配置 **********************/
 	'search' => array(
-		array('username', 'normal', '', 'like', '用户名'),
+		array('username', 'normal', '', 'like', '用户名')
 	),
 );

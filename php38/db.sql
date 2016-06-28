@@ -15,6 +15,7 @@ create table php38_goods
   goods_desc longtext comment '商品描述',
   is_on_sale enum('是','否') not null default '是' comment '是否上架',
   addtime int unsigned not null comment '添加时间',
+  admin_id mediumint unsigned not null  comment '添加这伯商品的管理员id',
   primary key (id),
   key shop_price(shop_price),
   key addtime(addtime),
@@ -47,20 +48,67 @@ VALUES
 
 ALTER TABLE php38_goods  ADD cat_id mediumint unsigned not null  comment '主分类id';
 
-drop table if exists php38_goods_ext_cat;
-create table php38_goods_ext_cat
+/******************************** RBAC  *******************************/
+-- 权限表
+drop table if exists php38_privilege;
+create table php38_privilege
 (
-  goods_id mediumint unsigned not null  comment '商品ID',
-  cat_id mediumint unsigned not null  comment '分类ID',
-  KEY goods_id(goods_id),
-  KEY cat_id(cat_id)
-)engine=myisam default charset=utf8 comment '商品的扩展分类';
+  id mediumint unsigned not null auto_increment comment 'ID',
+  pri_name varchar(150) not null comment '权限名称',
+  module_name varchar(30) not null default '' comment '模块名称',
+  controller_name varchar(30) not default '' null comment '控制器名称',
+  action_name varchar(30) not null default '' comment '方法名称',
+  parent_id mediumint unsigned not null default '0' comment '上级权限ID,0:代表顶级分类',
+  primary key (id)
+)engine=myisam default charset=utf8 comment '权限';
 
+-- 角色拥有的权限
+drop table if exists php38_role_pri;
+create table php38_role_pri
+(
+ role_id mediumint unsigned not null  comment '角色ID',
+ pri_id mediumint unsigned not null  comment '权限ID',
+ key role_id(role_id),
+ key pri_id(pri_id)
+)engine=myisam default charset=utf8 comment '角色拥有的权限';
+
+-- 角色表
+drop table if exists php38_role;
+create table php38_role
+(
+  id mediumint unsigned not null auto_increment comment 'ID',
+  role_name varchar(150) not null comment '角色名称',
+  primary key (id)
+)engine=myisam default charset=utf8 comment '角色';
+
+-- 管理员所在角色
+drop table if exists php38_admin_role;
+create table php38_admin_role
+(
+ admin_id mediumint unsigned not null  comment '管理员ID',
+ role_id mediumint unsigned not null  comment '角色ID',
+ key role_id(role_id),
+ key admin_id(admin_id)
+)engine=myisam default charset=utf8 comment '管理员所在角色';
+
+-- 管理员表
 drop table if exists php38_admin;
 create table php38_admin
 (
   id mediumint unsigned not null auto_increment comment 'ID',
   username varchar(150) not null comment '用户名',
   password char(32) not null comment '密码',
+  status enum('正常','禁用') not null default '正常' comment '状态',
   primary key (id)
 )engine=myisam default charset=utf8 comment '管理员';
+INSERT INTO php38_admin VALUES(1,'root','21232f297a57a5a743894a0e4a801fc3','正常');
+
+-- 管理员可以管理的分类
+drop table if exists php38_admin_goods_cat;
+create table php38_admin_goods_cat
+(
+ admin_id mediumint unsigned not null  comment '管理员ID',
+ cat_id mediumint unsigned not null  comment '分类ID',
+ key cat_id(cat_id),
+ key admin_id(admin_id)
+)engine=myisam default charset=utf8 comment '管理员可以管理的分类';

@@ -92,7 +92,7 @@ class GoodsModel extends Model{
 			$where['is_on_sale'] = array('eq',$ios); //goods_name LIKE '%$gn%'
 		}
 		//商品分类
-		$catId=I('get.cat_id');
+			$catId=I('get.cat_id');
 		if($catId){
 			//先取出这个分类所有子分类的ID
 			$catModel=D('Category');

@@ -46,7 +46,8 @@ class CategoryModel extends Model{
 	public function getChildren($catId){
 		//取出所有的分类
 		$data = $this -> select();
-
+		dump($data);
+		dump($catId);
 		//先清空再递归找子分类
 		return $this->_getChildren($data,$catId,TRUE);
 	}

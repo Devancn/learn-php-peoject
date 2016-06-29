@@ -19,12 +19,13 @@ create table php38_goods
   primary key (id),
   key shop_price(shop_price),
   key addtime(addtime),
+  key admin_id(admin_id),
   key cat_id(cat_id),
   key is_on_sale(is_on_sale)
 )engine=myisam default charset=utf8;
 -- 修改字段名
 alter table php38_goods change column smg_logo sm_logo  varchar(150) not null default '' comment '小图片';
-
+alter table php38_goods add index admin_id(admin_id);
 
 drop table if exists php38_category;
 create table php38_category

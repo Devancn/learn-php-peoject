@@ -18,25 +18,39 @@
 
 
 <div class="main-div">
-    <form name="main_form" method="POST" action="/index.php/Admin/Admin/add.html" enctype="multipart/form-data">
+    <form name="main_form" method="POST" action="/index.php/Admin/Privilege/add.html" enctype="multipart/form-data">
         <table cellspacing="1" cellpadding="3" width="100%">
+			<tr>
+				<td class="label">上级权限：</td>
+				<td>
+					<select name="parent_id">
+						<option value="0">顶级权限</option>
+						<?php foreach ($parentData as $k => $v): ?>						<option value="<?php echo $v['id']; ?>"><?php echo str_repeat('-', 8*$v['level']).$v['pri_name']; ?></option>
+						<?php endforeach; ?>					</select>
+				</td>
+			</tr>
             <tr>
-                <td class="label">用户名：</td>
+                <td class="label">权限名称：</td>
                 <td>
-                    <input  type="text" name="username" value="" />
+                    <input  type="text" name="pri_name" value="" />
                 </td>
             </tr>
             <tr>
-                <td class="label">密码：</td>
+                <td class="label">模块名称：</td>
                 <td>
-                    <input type="password" size="25" name="password" />
+                    <input  type="text" name="module_name" value="" />
                 </td>
             </tr>
             <tr>
-                <td class="label">状态：</td>
+                <td class="label">控制器名称：</td>
                 <td>
-                	<input type="radio" name="status" value="正常" checked="checked" />正常 
-                	<input type="radio" name="status" value="禁用"  />禁用 
+                    <input  type="text" name="controller_name" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">方法名称：</td>
+                <td>
+                    <input  type="text" name="action_name" value="" />
                 </td>
             </tr>
             <tr>

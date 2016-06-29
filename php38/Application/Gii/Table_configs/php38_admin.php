@@ -10,14 +10,15 @@ return array(
 	'pk' => 'id',    // 表中主键字段名称
 	/********************* 要生成的模型文件中的代码 ******************************/
 	// 添加时允许接收的表单中的字段
-	'insertFields' => "array('username','password')",
+	'insertFields' => "array('username','password','status')",
 	// 修改时允许接收的表单中的字段
-	'updateFields' => "array('id','username','password')",
+	'updateFields' => "array('id','username','password','status')",
 	'validate' => "
 		array('username', 'require', '用户名不能为空！', 1, 'regex', 3),
 		array('username', '1,150', '用户名的值最长不能超过 150 个字符！', 1, 'length', 3),
 		array('password', 'require', '密码不能为空！', 1, 'regex', 3),
 		array('password', '1,32', '密码的值最长不能超过 32 个字符！', 1, 'length', 3),
+		array('status', '正常,禁用', \"状态的值只能是在 '正常,禁用' 中的一个值！\", 2, 'in', 3),
 	",
 	/********************** 表中每个字段信息的配置 ****************************/
 	'fields' => array(
@@ -31,9 +32,19 @@ return array(
 			'type' => 'password',
 			'default' => '',
 		),
+		'status' => array(
+			'text' => '状态',
+			'type' => 'radio',
+			'values' => array(
+				'正常' => '正常',
+				'禁用' => '禁用',
+			),
+			'default' => '正常',
+		),
 	),
 	/**************** 搜索字段的配置 **********************/
 	'search' => array(
-		array('username', 'normal', '', 'like', '用户名')
+		array('username', 'normal', '', 'like', '用户名'),
+		array('status', 'in', '正常-正常,禁用-禁用', '', '帐号状态'),
 	),
 );

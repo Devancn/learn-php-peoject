@@ -17,6 +17,13 @@
                 </td>
             </tr>
             <tr>
+                <td class="label">状态：</td>
+                <td>
+                	<input type="radio" name="status" value="正常" <?php if($data['status'] == '正常') echo 'checked="checked"'; ?> />正常 
+                	<input type="radio" name="status" value="禁用" <?php if($data['status'] == '禁用') echo 'checked="checked"'; ?> />禁用 
+                </td>
+            </tr>
+            <tr>
                 <td colspan="99" align="center">
                     <input type="submit" class="button" value=" 确定 " />
                     <input type="reset" class="button" value=" 重置 " />

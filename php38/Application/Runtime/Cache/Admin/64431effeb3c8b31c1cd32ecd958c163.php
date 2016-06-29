@@ -18,16 +18,10 @@
 
 <!-- 搜索 -->
 <div class="form-div search_form_div">
-    <form action="/index.php/Admin/Admin/lst" method="GET" name="search_form">
+    <form action="/index.php/Admin/Role/lst" method="GET" name="search_form">
 		<p>
-			用户名：
-	   		<input type="text" name="username" size="30" value="<?php echo I('get.username'); ?>" />
-		</p>
-		<p>
-			帐号状态：
-			<input type="radio" value="-1" name="status" <?php if(I('get.status', -1) == -1) echo 'checked="checked"'; ?> /> 全部 
-			<input type="radio" value="正常" name="status" <?php if(I('get.status', -1) == '正常') echo 'checked="checked"'; ?> /> 正常 
-			<input type="radio" value="禁用" name="status" <?php if(I('get.status', -1) == '禁用') echo 'checked="checked"'; ?> /> 禁用 
+			角色名称：
+	   		<input type="text" name="role_name" size="30" value="<?php echo I('get.role_name'); ?>" />
 		</p>
 		<p><input type="submit" value=" 搜索 " class="button" /></p>
     </form>
@@ -36,16 +30,12 @@
 <div class="list-div" id="listDiv">
 	<table cellpadding="3" cellspacing="1">
     	<tr>
-            <th >用户名</th>
-            <th >密码</th>
-            <th >状态</th>
+            <th >角色名称</th>
 			<th width="60">操作</th>
         </tr>
 		<?php foreach ($data as $k => $v): ?>            
 			<tr class="tron">
-				<td><?php echo $v['username']; ?></td>
-				<td><?php echo $v['password']; ?></td>
-				<td><?php echo $v['status']; ?></td>
+				<td><?php echo $v['role_name']; ?></td>
 		        <td align="center">
 		        	<a href="<?php echo U('edit?id='.$v['id'].'&p='.I('get.p')); ?>" title="编辑">编辑</a> |
 	                <a href="<?php echo U('delete?id='.$v['id'].'&p='.I('get.p')); ?>" onclick="return confirm('确定要删除吗？');" title="移除">移除</a> 

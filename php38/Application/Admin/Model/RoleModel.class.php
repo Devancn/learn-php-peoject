@@ -1,26 +1,20 @@
 <?php
 namespace Admin\Model;
 use Think\Model;
-class AdminModel extends Model 
+class RoleModel extends Model 
 {
-	protected $insertFields = array('username','password','status');
-	protected $updateFields = array('id','username','password','status');
+	protected $insertFields = array('role_name');
+	protected $updateFields = array('id','role_name');
 	protected $_validate = array(
-		array('username', 'require', '用户名不能为空！', 1, 'regex', 3),
-		array('username', '1,150', '用户名的值最长不能超过 150 个字符！', 1, 'length', 3),
-		array('password', 'require', '密码不能为空！', 1, 'regex', 3),
-		array('password', '1,32', '密码的值最长不能超过 32 个字符！', 1, 'length', 3),
-		array('status', '正常,禁用', "状态的值只能是在 '正常,禁用' 中的一个值！", 2, 'in', 3),
+		array('role_name', 'require', '角色名称不能为空！', 1, 'regex', 3),
+		array('role_name', '1,150', '角色名称的值最长不能超过 150 个字符！', 1, 'length', 3),
 	);
 	public function search($pageSize = 20)
 	{
 		/**************************************** 搜索 ****************************************/
 		$where = array();
-		if($username = I('get.username'))
-			$where['username'] = array('like', "%$username%");
-		$status = I('get.status');
-		if($status != '' && $status != '-1')
-			$where['status'] = array('eq', $status);
+		if($role_name = I('get.role_name'))
+			$where['role_name'] = array('like', "%$role_name%");
 		/************************************* 翻页 ****************************************/
 		$count = $this->alias('a')->where($where)->count();
 		$page = new \Think\Page($count, $pageSize);

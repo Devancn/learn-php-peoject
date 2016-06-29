@@ -18,25 +18,12 @@
 
 
 <div class="main-div">
-    <form name="main_form" method="POST" action="/index.php/Admin/Admin/add.html" enctype="multipart/form-data">
+    <form name="main_form" method="POST" action="/index.php/Admin/Role/add.html" enctype="multipart/form-data">
         <table cellspacing="1" cellpadding="3" width="100%">
             <tr>
-                <td class="label">用户名：</td>
+                <td class="label">角色名称：</td>
                 <td>
-                    <input  type="text" name="username" value="" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label">密码：</td>
-                <td>
-                    <input type="password" size="25" name="password" />
-                </td>
-            </tr>
-            <tr>
-                <td class="label">状态：</td>
-                <td>
-                	<input type="radio" name="status" value="正常" checked="checked" />正常 
-                	<input type="radio" name="status" value="禁用"  />禁用 
+                    <input  type="text" name="role_name" value="" />
                 </td>
             </tr>
             <tr>

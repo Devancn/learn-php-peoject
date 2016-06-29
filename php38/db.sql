@@ -15,7 +15,7 @@ create table php38_goods
   goods_desc longtext comment '商品描述',
   is_on_sale enum('是','否') not null default '是' comment '是否上架',
   addtime int unsigned not null comment '添加时间',
-  admin_id mediumint unsigned not null  comment '添加这伯商品的管理员id',
+  admin_id mediumint unsigned not null  comment '添加这个商品的管理员id',
   primary key (id),
   key shop_price(shop_price),
   key addtime(addtime),

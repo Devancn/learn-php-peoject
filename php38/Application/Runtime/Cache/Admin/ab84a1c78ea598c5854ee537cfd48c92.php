@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="/Public/Admin/Styles/general.css" rel="stylesheet" type="text/css" />
     <link href="/Public/Admin/Styles/main.css" rel="stylesheet" type="text/css" />
+    <script src="/Public/Admin/Js/jquery-1.7.2.min.js"></script>
 </head>
 <body>
 <h1>
@@ -44,6 +45,9 @@
         </table>
     </form>
 </div>
+<script>
+
+</script>
 
 <div id="footer">
     共执行 3 个查询，用时 0.021251 秒，Gzip 已禁用，内存占用 2.194 MB<br />

@@ -2,3 +2,6 @@
 ERR: 1146:La table 'php38.php38_role_pro' n'existe pas
  [ SQL语句 ] : SHOW COLUMNS FROM `php38_role_pro`
 
+[ 2016-06-29T22:25:47+08:00 ] 127.0.0.1 /index.php/Admin/Admin/index
+ERR: 非法操作:index
+

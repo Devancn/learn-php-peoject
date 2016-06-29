@@ -27,6 +27,15 @@
                 </td>
             </tr>
             <tr>
+                <td class="label">权限列表：</td>
+                <td>
+                    <?php foreach ($priData as $k => $v):?>
+                        <?php echo str_repeat('-',$v['level']*8);?><input type="checkbox" name="pri_id[]" value="<?php echo $v['id']?>"><?php echo $v['pri_name'];?><br/>
+                    <?php endforeach;?>
+                </td>
+            </td>
+            </tr>
+            <tr>
                 <td colspan="99" align="center">
                     <input type="submit" class="button" value=" 确定 " />
                     <input type="reset" class="button" value=" 重置 " />
@@ -35,8 +44,7 @@
         </table>
     </form>
 </div>
-<script>
-</script>
+
 <div id="footer">
     共执行 3 个查询，用时 0.021251 秒，Gzip 已禁用，内存占用 2.194 MB<br />
     版权所有 &copy; 2005-2012 上海商派网络科技有限公司，并保留所有权利。

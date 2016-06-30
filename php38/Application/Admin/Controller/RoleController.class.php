@@ -62,7 +62,6 @@ class RoleController extends Controller
 		))->find();
 		// 设置页面中的信息
 		$priIds=explode(',',$priIds['pri_id']);
-		dump($priIds);
 		$this->assign(array(
 			'priIds' => $priIds,
 			'priData' => $priData,

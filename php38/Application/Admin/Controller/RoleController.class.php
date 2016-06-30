@@ -61,8 +61,10 @@ class RoleController extends Controller
 			'role_id' => array('eq',$id)
 		))->find();
 		// 设置页面中的信息
+		$priIds=explode(',',$priIds['pri_id']);
+		dump($priIds);
 		$this->assign(array(
-			'priIds' => $priIds['pri_id'],
+			'priIds' => $priIds,
 			'priData' => $priData,
 			'_page_title' => '修改角色',
 			'_page_btn_name' => '角色列表',

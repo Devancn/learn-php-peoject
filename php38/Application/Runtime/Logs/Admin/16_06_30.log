@@ -33,3 +33,7 @@ ERR: 1048:Le champ 'role_id' ne peut être vide (null)
 ERR: 1048:Le champ 'role_id' ne peut être vide (null)
  [ SQL语句 ] : INSERT INTO `php38_role_pri` (`role_id`,`pri_id`) VALUES (NULL,'5')
 
+[ 2016-06-30T13:23:41+08:00 ] 127.0.0.1 /index.php/Admin/Role/edit/id/7.html
+ERR: 1064:Erreur de syntaxe près de ') pri_id FROM `php38_role_pri` WHERE `role_id` = '7' LIMIT 1' à la ligne 1
+ [ SQL语句 ] : SELECT pri_id) pri_id FROM `php38_role_pri` WHERE `role_id` = '7' LIMIT 1  
+

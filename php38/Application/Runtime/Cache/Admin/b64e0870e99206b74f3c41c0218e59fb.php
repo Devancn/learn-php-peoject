@@ -19,7 +19,7 @@
 
 
 <div class="main-div">
-    <form name="main_form" method="POST" action="/index.php/Admin/Admin/edit/id/2.html" enctype="multipart/form-data" >
+    <form name="main_form" method="POST" action="/index.php/Admin/Admin/edit/id/7.html" enctype="multipart/form-data" >
     	<input type="hidden" name="id" value="<?php echo $data['id']; ?>" />
         <table cellspacing="1" cellpadding="3" width="100%">
             <tr>
@@ -32,13 +32,43 @@
                 <td class="label">密码：</td>
                 <td>
                     <input type="password" size="25" name="password" />
+                    密码留空,代表不修改密码
                 </td>
             </tr>
+            <tr>
+                <td class="label">确认密码：</td>
+                <td>
+                    <input type="password" size="25" name="cpassword" />
+                </td>
+            </tr>
+            <?php if($data['id']>1) :?>
             <tr>
                 <td class="label">状态：</td>
                 <td>
                 	<input type="radio" name="status" value="正常" <?php if($data['status'] == '正常') echo 'checked="checked"'; ?> />正常 
                 	<input type="radio" name="status" value="禁用" <?php if($data['status'] == '禁用') echo 'checked="checked"'; ?> />禁用 
+                </td>
+            </tr>
+            <?php endif ;?>
+            <tr>
+                <td class="label">所在角色：</td>
+                <td>
+                    <?php foreach ($roleData as $k => $v): if( strpos(','.$rids.',', ','.$v['id'].',') !== FALSE ) $check = 'checked="checked"'; else $check = ''; ?>
+                    <input <?php echo $check; ?> value="<?php echo $v['id']; ?>" type="checkbox" name="role_id[]" /> <?php echo $v['role_name']; ?>
+                    <?php endforeach; ?>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">可以管理的商品分类：</td>
+                <td>
+                    <ul>
+                        <?php foreach ($catData as $k => $v): if( strpos(','.$cids.',', ','.$v['id'].',') !== FALSE ) $check = 'checked="checked"'; else $check = ''; ?>
+                        <li>
+                            <?php echo str_repeat('-', $v['level']*8); ?><input <?php echo $check; ?> level="<?php echo $v['level']; ?>" value="<?php echo $v['id']; ?>" type="checkbox" name="cat_id[]" /> <a level="<?php echo $v['level']; ?>" href="javascript:void(0);">[-]</a> <?php echo $v['cat_name']; ?>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
                 </td>
             </tr>
             <tr>
@@ -51,6 +81,76 @@
     </form>
 </div>
 <script>
+    $(":checkbox").click(function(){
+        // 所在的li
+        var li = $(this).parent();
+        // 先取当前的level
+        var level = $(this).attr("level");
+        // 判断是选中还是取消
+        if($(this).attr("checked"))
+        {
+            // 循环后面的每一个
+            li.nextAll("li").each(function(k,v){
+                // 判断如果level大就说明是子权限
+                if($(v).find(":checkbox").attr("level") > level)
+                    $(v).find(":checkbox").attr("checked", "checked");
+                else
+                    return false;  // 退出循环，后面的不用再判断了
+            });
+            var tmp_level = level;  // 复制一个level值
+            // 循环前面的每一个
+            li.prevAll("li").each(function(k,v){
+                // 判断如果level大就说明是子权限
+                if($(v).find(":checkbox").attr("level") < tmp_level)
+                {
+                    $(v).find(":checkbox").attr("checked", "checked");
+                    tmp_level--;   // 每找到一个上级就再向前提一级
+                }
+            });
+        }
+        else
+        {
+            li.nextAll("li").each(function(k,v){
+                // 判断如果level大就说明是子权限
+                if($(v).find(":checkbox").attr("level") > level)
+                    $(v).find(":checkbox").removeAttr("checked");
+                else
+                    return false;  // 退出循环，后面的不用再判断了
+            });
+        }
+    });
+
+    $("a").click(function(){
+        var li = $(this).parent();
+        // 获取是第几级的
+        var level = $(this).attr("level");
+        if($(this).text() == '[+]')
+        {
+            $(this).text('[-]');
+            li.nextAll("li").each(function(k,v){
+                // 判断如果level大就说明是子权限
+                if($(v).find(":checkbox").attr("level") > level)
+                {
+                    $(v).find("a").text('[-]');
+                    $(v).show();
+                }
+                else
+                    return false;  // 退出循环，后面的不用再判断了
+            });
+        }
+        else
+        {
+            $(this).text('[+]');
+            // 把所有的子权限折叠
+            li.nextAll("li").each(function(k,v){
+                // 判断如果level大就说明是子权限
+                if($(v).find(":checkbox").attr("level") > level)
+                    $(v).hide();
+                else
+                    return false;  // 退出循环，后面的不用再判断了
+            });
+        }
+    });
 </script>
 <div id="footer">
     共执行 3 个查询，用时 0.021251 秒，Gzip 已禁用，内存占用 2.194 MB<br />

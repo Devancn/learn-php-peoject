@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="/Public/Admin/Styles/general.css" rel="stylesheet" type="text/css" />
     <link href="/Public/Admin/Styles/main.css" rel="stylesheet" type="text/css" />
+    <script src="/Public/Admin/Js/jquery-1.7.2.min.js"></script>
 </head>
 <body>
 <h1>
@@ -18,7 +19,7 @@
 
 
 <div class="main-div">
-    <form name="main_form" method="POST" action="/index.php/Admin/Admin/edit/id/1.html" enctype="multipart/form-data" >
+    <form name="main_form" method="POST" action="/index.php/Admin/Admin/edit/id/2.html" enctype="multipart/form-data" >
     	<input type="hidden" name="id" value="<?php echo $data['id']; ?>" />
         <table cellspacing="1" cellpadding="3" width="100%">
             <tr>
@@ -31,6 +32,13 @@
                 <td class="label">密码：</td>
                 <td>
                     <input type="password" size="25" name="password" />
+                </td>
+            </tr>
+            <tr>
+                <td class="label">状态：</td>
+                <td>
+                	<input type="radio" name="status" value="正常" <?php if($data['status'] == '正常') echo 'checked="checked"'; ?> />正常 
+                	<input type="radio" name="status" value="禁用" <?php if($data['status'] == '禁用') echo 'checked="checked"'; ?> />禁用 
                 </td>
             </tr>
             <tr>

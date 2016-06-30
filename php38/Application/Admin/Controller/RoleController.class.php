@@ -52,8 +52,18 @@ class RoleController extends Controller
     	$data = $model->find($id);
     	$this->assign('data', $data);
 
+		//取出所有的权限
+		$priModel=D('Privilege');
+		$priData=$priModel->getTree();
+		//取出这个角色拥有的权限的ID
+		$rpModel=M('role_pri');
+		$priIds=$rpModel->field('GROUP_CONCAT(pri_id)pri_id')->where(array(
+			'role_id' => array('eq',$id)
+		))->find();
 		// 设置页面中的信息
 		$this->assign(array(
+			'priIds' => $priIds['pri_id'],
+			'priData' => $priData,
 			'_page_title' => '修改角色',
 			'_page_btn_name' => '角色列表',
 			'_page_btn_link' => U('lst'),

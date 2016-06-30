@@ -57,15 +57,31 @@ class RoleModel extends Model
 	// 修改前
 	protected function _before_update(&$data, $option)
 	{
+		//*****************把这个角色拥有的权限保存到角色权限表
+		$id=I('post.id');
+		$priId=I('post.pri_id');
+		//先删除原数据
+		$riModel=M('role_pri');
+		$riModel->where(array(
+			'role_id'=>array('eq',$id)
+		))->delete();
+		if($priId){
+			$priModel=M('role_pri');
+			foreach ($priId as $v){
+				$priModel->add(array(
+					'role_id' => $id,
+					'pri_id' => $v
+				));
+			}
+		}
 	}
 	// 删除前
 	protected function _before_delete($option)
 	{
-		if(is_array($option['where']['id']))
-		{
-			$this->error = '不支持批量删除';
-			return FALSE;
-		}
+		$rpModel = M('role_pri');
+		$rpModel->where(array(
+			'role_id'=>array('eq',I('get.id'))
+		))->delete();
 	}
 	/************************************ 其他方法 ********************************************/
 }

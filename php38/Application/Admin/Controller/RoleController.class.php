@@ -23,7 +23,6 @@ class RoleController extends Controller
 		$priModel=D('Privilege');
 		$priData=$priModel->getTree();
 
-		// 设置页面中的信息
 		$this->assign(array(
 			'priData' => $priData,
 			'_page_title' => '添加角色',

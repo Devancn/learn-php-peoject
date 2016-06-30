@@ -19,8 +19,17 @@ class AdminController extends Controller
     		$this->error($model->getError());
     	}
 
+		//取出所有的角色
+		$roleModel=M('Role');
+		$roleData=$roleModel->select();
+		//取出所有的商品分类
+		$cateModel=D('Category');
+		$cateData=$cateModel->getTree();
+
 		// 设置页面中的信息
 		$this->assign(array(
+			'cateData'=>$cateData,
+			'roleData'=>$roleData,
 			'_page_title' => '添加管理员',
 			'_page_btn_name' => '管理员列表',
 			'_page_btn_link' => U('lst'),

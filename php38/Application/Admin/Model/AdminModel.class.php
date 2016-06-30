@@ -36,6 +36,33 @@ class AdminModel extends Model
 	protected function _before_insert(&$data, $option)
 	{
 	}
+	// 添加前
+	protected function _after_insert($data, $option)
+	{
+		/******************** 处理表单中的角色 *************************/
+		$roleId=I('post.role_id');
+		if($roleId){
+			$arModel=D('admin_role');
+			foreach($roleId as $v){
+				$arModel->add(array(
+					'admin_id' => $data['id'],
+					'role_id'  =>$v,
+				));
+			}
+		}
+
+		/******************** 处理表单中的商品分类 *************************/
+		$catId=I('post.cat_id');
+		if($catId){
+			$agcModel=D('admin_goods_cat');
+			foreach($catId as $v){
+				$agcModel->add(array(
+					'admin_id' => $data['id'],
+					'cat_id'  =>$v,
+				));
+			}
+		}
+	}
 	// 修改前
 	protected function _before_update(&$data, $option)
 	{

@@ -3,8 +3,9 @@ namespace Admin\Model;
 use Think\Model;
 class AdminModel extends Model 
 {
-	protected $insertFields = array('username','password','cpassword','status');
+	protected $insertFields = array('username','password','cpassword','status','chkcode');
 	protected $updateFields = array('id','username','password','cpassword','status');
+	//添加和修改管理员时使用的规则
 	protected $_validate = array(
 		array('username', 'require', '用户名不能为空！', 1, 'regex', 3),
 		array('username', '1,150', '用户名的值最长不能超过 150 个字符！', 1, 'length', 3),
@@ -14,6 +15,50 @@ class AdminModel extends Model
 		array('status', '正常,禁用', "状态的值只能是在 '正常,禁用' 中的一个值！", 2, 'in',1),
 		array('username', '', '用户名已经存在！', 1, 'unique', 3),
 	);
+
+	//登录的方法
+	public function login(){
+		//从模型中获取用记名和密码
+		$username=I('post.username');
+		$password=I('post.password');
+		//先判断有没有这个账号
+		$urser=$this->where(array(
+			'username' => array('eq',$username)
+		))->find();
+		if($urser){
+			//判断禁用
+			if($urser['status'] == '正常'){
+				if($urser['password'] == md5($password.C('MD5_KEY'))){
+					//登录成功后把 id和 username存到session中
+					session('id',$urser['id']);
+					session('username',$urser['username']);
+					return TRUE;
+				}else{
+					$this->error="密码错误!";
+					return FALSE;
+				}
+			}else{
+				$this->error="账号被禁用,不能登录!";
+				return FALSE;
+			}
+		}else{
+			$this->error="账号不存在!";
+			return FALSE;
+		}
+	}
+	//定义登录使用的表单验证规则
+	public $_login_validate=array(
+		array('chkcode', 'require', '验证码不能为空！', 1, 'regex', 3),
+		array('chkcode', 'chk_code', '验证码不正确！', 1, 'callback',3),
+		array('username', 'require', '用户名不能为空！', 1, 'regex', 3),
+		array('password', 'require', '密码不能为空！', 1, 'regex', 1),
+	);
+	//验证码是否正确
+	protected function chk_code($code){
+		$verify = new \Think\Verify();
+		return $verify->check($code);
+	}
+
 	public function search($pageSize = 20)
 	{
 		/**************************************** 搜索 ****************************************/

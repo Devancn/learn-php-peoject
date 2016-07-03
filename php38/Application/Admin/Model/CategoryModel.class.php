@@ -13,8 +13,12 @@ class CategoryModel extends Model{
 
 	/****************打印树形结构**************************/
 	public function getTree(){
-		//取出所有的分类
-		$data=$this->select();
+		$id=session('id');
+		if($id == 1){
+			$data=$this->select();
+		}else{
+			$data=$this->where("id IN(select cat_id from php38_admin_goods_cat where admin_id=$id)")->select();
+		}
 		//递归重新排序数据
 		return $this->_getTree($data);
 	}
@@ -44,7 +48,7 @@ class CategoryModel extends Model{
 	 * @param $catId :父分类的ID
 	 */
 	public function getChildren($catId){
-		//取出所有的分类
+		//取出当前管理员有权限访问的分类
 		$data = $this -> select();
 		//先清空再递归找子分类
 		return $this->_getChildren($data,$catId,TRUE);

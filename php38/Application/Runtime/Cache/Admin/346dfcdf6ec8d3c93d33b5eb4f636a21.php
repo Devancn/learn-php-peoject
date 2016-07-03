@@ -31,7 +31,7 @@
         </p>
     </div>
     <div id="tabbody-div">
-        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/add" method="post">
+        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/add.html" method="post">
             <table width="90%" id="general-table" align="center">
                 <tr>
                     <td class="label">主分类：</td>

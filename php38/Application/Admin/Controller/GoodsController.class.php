@@ -28,7 +28,7 @@ class GoodsController extends BaseController{
 		//$this->assign('data',$data['data']);
 		//$this->assign('data',$data['page']);
 
-		//取出商品分类
+		//取出商品分类制作下拉框
 		$catModel=D('Category');
 		$cateData=$catModel->getTree();
 		//设置页面信息

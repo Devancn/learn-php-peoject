@@ -58,94 +58,128 @@ class GoodsModel extends Model{
 			}
 		}
 	}
-	//获取袋翻页的商品数据
-	public function search(){
-		/************** 搜索 **************/
-		$where=array(); //where条件的数组
-		//商品名称
-		$gn=I('get.gn');
-		if($gn){
-			$where['a.goods_name'] = array('like',"%$gn%"); //goods_name LIKE '%$gn%'
-		}
-		//价格
-		$fp=I('get.fp');
-		$tp=I('get.tp');
-		if($fp && $tp){
-			$where['a.shop_price']=array('between',array($fp,$tp));
-		}else if($fp){
-			$where['a.shop_price']=array('egt',$fp); //大于等于 shop_price>=$fp
-		}else if($tp){
-			$where['a.shop_price']=array('elt',$tp); //小于等于 shop_price<=$fp
-		}
-		//添加时间
-		$ft=I('get.ft');
-		$et=I('get.et');
-		if($ft && $et){
-			$where['a.addtime']=array('between',array(strtotime("$ft 00:00:00"),strtotime("$et 23:59:59")));
-		}else if($ft){
-			$where['a.addtime']=array('egt',strtotime("$ft 00:00:00")); //大于等于 shop_price>=$fp
-		}else if($et){
-			$where['a.addtime']=array('elt',strtotime("$et 23:59:59")); //小于等于 shop_price<=$fp
-		}
-		//是否上架
-		$ios=I('get.ios');
-		if($ios == '是' || $ios == '否'){
-			$where['is_on_sale'] = array('eq',$ios); //goods_name LIKE '%$gn%'
-		}
-		//商品分类
-			$catId=I('get.cat_id');
-		if($catId){
-			//先取出这个分类所有子分类的ID
-			$catModel=D('Category');
-			$children=$catModel->getChildren($catId);
-			//所父分类也放到这个数组中
-			$children[]=$catId;
-			$children=implode(',',$children);
-			//搜索这些分类下的商品[主分类和扩展分类]
-			//$where['a.cat_id'] = array('in',$children);
-			//扩展分类
-			//先查询商品分类表,根据分类的ID取出这个如那分类下所有商品的ID
-			$gcModel = M('goods_ext_cat');
-			$gids=$gcModel->field('GROUP_CONCAT(goods_id) gids')->where(array(
-				'cat_id' => array('eq',$catId),
+// 获取带翻页的商品数据
+	public function search()
+	{
+		/*********** 搜索 ***********/
+		$where = array();  // where条件的数组
+		// 只查询出有权限管理的分类下的商品
+		$id = session('id');
+		// 如果是普通管理员
+		if($id > 1)
+		{
+			// 先取出这个管理员有权限访问的分类ID
+			$agcModel = M('admin_goods_cat');
+			$hasPriCatIds =$agcModel->field('GROUP_CONCAT(cat_id) cids')->where(array(
+				'admin_id' => array('eq', $id),
 			))->find();
-			//根据商品ID取出商品
-			//$where['a.id'] = array('in',$gids['gids']);
-			//主分类的条件的扩展分类的条件以OR的方式搜索
-			$where['a.cat_id'] = array('exp',"IN($children) OR a.id IN({$gids['gids']})"); //exp 表示写一个表达式
+			//var_dump($hasPriCatIds);
+			// 先取出这些扩展分类下的商品
+			$gecModel = M('goods_ext_cat');
+			$gids = $gecModel->field('GROUP_CONCAT(goods_id) gids')->where(array(
+				'cat_id' => array('in', $hasPriCatIds['cids'])
+			))->find();
+			// 如果扩展分类中没有搜索出商品就不考虑扩展分类主考虑主分类
+			if(empty($gids['gids']))
+				$where['a.cat_id'] = array('in', $hasPriCatIds['cids']);
+			else
+				$where['a.cat_id'] = array('exp', "IN({$hasPriCatIds['cids']}) OR a.id IN({$gids['gids']})");
 		}
-		/************** 翻页 **************/
-		//取出总得记录数
-		$count=$this->alias('a')->where($where)->count();
-		$Page = new \Think\Page($count,15);// 实例化分页类 传入总记录数和每页显示的记录数(25)
-		//设置上一页和下一页的字符串
-		$Page->setConfig('prev','上一页');
-		$Page->setConfig('next','下一页');
-		//生成翻页字符串,这个字符串要在页面中显示出来
-		$pageString= $Page->show();// 分页显示输出
-
-		/************** 取某一页的数据 **************/
+		// 商品名称
+		$gn = I('get.gn');
+		if($gn)
+			$where['a.goods_name'] = array('like', "%$gn%");   // goods_name LIKE '%$gn%'
+		// 价格
+		$fp = I('get.fp');
+		$tp = I('get.tp');
+		if($fp && $tp)
+			$where['a.shop_price'] = array('between', array($fp, $tp));
+		elseif ($fp)
+			$where['a.shop_price'] = array('egt', $fp);  // shop_price >= $fp
+		elseif ($tp)
+			$where['a.shop_price'] = array('elt', $tp);  // shop_price <= $Tp
+		// 添加时间
+		$ft = I('get.ft');
+		$et = I('get.et');
+		if($ft && $et)
+			$where['a.addtime'] = array('between', array(strtotime("$ft 00:00:00"), strtotime("$et 23:59:59")));
+		elseif ($ft)
+			$where['a.addtime'] = array('egt', strtotime("$ft 00:00:00"));  // shop_price >= $fp
+		elseif ($et)
+			$where['a.addtime'] = array('elt', strtotime("$et 23:59:59"));  // shop_price <= $Tp
+		// 是否上架
+		$ios = I('get.ios');
+		if($ios == '是' || $ios == '否')
+			$where['a.is_on_sale'] = array('eq', $ios);
+		// 商品分类
+		$catId = I('get.cat_id');
+		if($catId)
+		{
+			// 先取出这个分类所有子分类的ID
+			$catModel = D('Category');
+			$children = $catModel->getChildren($catId);
+			// 把父分类也放到这个数组中
+			$children[] = $catId;
+			// 如果是普通管理员再从上面的数组中去掉没有权限访问的分类
+			if($id > 1)
+			{
+				// 有权限访问的分类ID
+				$_arr = explode(',', $hasPriCatIds['cids']);
+				$children = array_intersect($children, $_arr);
+			}
+			if($children)
+			{
+				$children = implode(',', $children);
+				// 搜索这些分类下的商品【主分类】
+				//$where['a.cat_id'] = array('in', $children);
+				// 扩展分类
+				// 先查询商品分类表，取出这些分类下扩展分类下所有商品的ID
+				$gcModel = M('goods_ext_cat');
+				$gids = $gcModel->field('GROUP_CONCAT(goods_id) gids')->where(array(
+					'cat_id' => array('in', $children),
+				))->find();
+				// 根据商品ID取出这些商品
+				//$where['a.id'] = array('in', $gids['gids']);
+				// 主分类的条件和扩展分类的条件以OR的方式搜索
+				if(empty($gids['gids']))
+					$where['a.cat_id'] = array('IN', $children);
+				else
+					$where['a.cat_id'] = array('exp', "IN($children) OR a.id IN({$gids['gids']})");
+			}
+			else
+				$where['a.id'] = array('eq', 0);
+		}
+		/************* 翻页 ***************/
+		// 取出总的记录数
+		$count = $this->alias('a')->where($where)->count();
+		$page = new \Think\Page($count, 15);
+		// 设置上一页和下一页的字符串
+		$page->setConfig('prev', '上一页');
+		$page->setConfig('next', '下一页');
+		// 生成翻页字符串，这个字符串要在页面中显示出来
+		$pageString = $page->show();
+		/************ 取某一页的数据 ********/
 		/**
 		 * SELECT a.*,b.cat_name,GROUP_CONCAT(d.cat_name) ext_cat_name
-		 * FROM php38_goods a
-		 * LEFT JOIN php38_category b ON a.cat_id=b.id
-		 * LEFT JOIN php38_goods_ext_cat c ON a.id=c.goods_id
-		 * LEFT JOIN php38_category d ON c.cat_id=d.id
-		 * GROUP BY a.id
+		 *  FROM php38_goods a
+		 *   LEFT JOIN php38_category b ON a.cat_id=b.id
+		 *   LEFT JOIN php38_goods_ext_cat c ON a.id=c.goods_id
+		 *   LEFT JOIN php38_category d ON c.cat_id=d.id
+		 *   GROUP BY a.id
 		 */
-		$data=$this->where($where)->alias('a')
-			->field('a.*,b.cat_name,GROUP_CONCAT(d.cat_name SEPARATOR "<br>") ext_cat_name')
+		$data = $this->alias('a')
+			->field('a.*,b.cat_name,GROUP_CONCAT(d.cat_name SEPARATOR "<br />") ext_cat_name')
 			->join('LEFT JOIN php38_category b ON a.cat_id=b.id
-					LEFT JOIN php38_goods_ext_cat c ON a.id=c.goods_id
-					LEFT JOIN php38_category d ON c.cat_id=d.id
-			')
-			->limit($Page->firstRow.','.$Page->listRows)
+		        LEFT JOIN php38_goods_ext_cat c ON a.id=c.goods_id
+		        LEFT JOIN php38_category d ON c.cat_id=d.id')
+			->where($where)
+			->limit($page->firstRow .','. $page->listRows)
 			->group('a.id')
 			->select();
 
 		return array(
 			'data' => $data,
-			'page' => $pageString
+			'page' => $pageString,
 		);
 	}
 

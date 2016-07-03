@@ -17,6 +17,7 @@ class GoodsModel extends Model{
 	//TP在执行add方法时会先调用这个方法[在记录插入到数据库之前，给我们一个机会修改表单中的数据]
 	//$datra :代表表单中的数据
 	protected function _before_insert(&$data,$option){
+		$data['admin_id']=session('id');
 		//使用自己定义的函数过滤
 		$data['goods_desc'] = removeXSS($_POST['goods_desc']);
 		//向表单中补上addtime字段
@@ -172,6 +173,11 @@ class GoodsModel extends Model{
 	protected function _before_update(&$data,$option){
 		/********** 处理表单中扩展分类的代码 ***************/
 		$id=I('post.id');
+		$priModel=D('Privilege');
+		if(!$priModel->hasPriTOEditGoods($id)){
+			$this->error='无权修改该商品';
+			return false;
+		}
 		$ecid=I('post.ext_cat_id');
 		// 生成中间表的模型
 		$gcModel = M('goods_ext_cat');
@@ -244,6 +250,11 @@ class GoodsModel extends Model{
 	protected function _before_delete($option){
 		//商品的ID
 		$id=I('get.id');
+		$priModel=D('Privilege');
+		if(!$priModel->hasPriTOEditGoods($id)){
+			$this->error='无权删除该商品';
+			return false;
+		}
 		/************** 先删除商品的图片 **************/
 		//先从数据库中取出这伯商品的图片路径
 		$logo=$this->field('logo,sm_logo,mid_logo')->find($id);

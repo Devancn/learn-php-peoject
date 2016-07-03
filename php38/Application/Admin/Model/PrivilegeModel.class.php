@@ -40,6 +40,18 @@ class PrivilegeModel extends Model
 		$data = $this->select();
 		return $this->_children($data, $id);
 	}
+
+	public function hasPriTOEditGoods($goodsId){
+		$adminId=session('id');
+		if($adminId == 1){
+			return TRUE;
+		}else{
+			$model=D('Goods');
+			$admin_id=$model->field('admin_id')->find($goodsId);
+			return ($admin_id['admin_id'] == $adminId);
+		}
+	}
+
 	private function _children($data, $parent_id=0, $isClear=TRUE)
 	{
 		static $ret = array();
@@ -54,6 +66,71 @@ class PrivilegeModel extends Model
 			}
 		}
 		return $ret;
+	}
+
+	/**
+	 * 判断管理员是否有权限访问这个页面
+	 */
+	public function hasPri(){
+		//获取管理员ID
+		$id=session('id');
+		if($id == 1){
+			return TRUE;
+		}else if(CONTROLLER_NAME =='Index'){
+			return TRUE;
+		}else{
+			//如果是普通管理员，获取当前访问的模块名[MODEULE_NAME],控制器名[CONTROLLER_NAME],方法名[ACTION_NAME]
+			//查询这个管理员有没有一个权限对应这个页面
+			//SQL流程:1.根据管理员的ID取出这个管理员所在的角色
+			//        2.再根据这些角色ID取出这些角色所拥有的权限的ID
+			//        3.再根据权限ID到权限表查询出有没有对应这个页面的权限
+						$sql='SELECT count(*) has
+					FROM php38_admin_role a
+					LEFT JOIN php38_role_pri b ON a.role_id = b.role_id
+					LEFT JOIN php38_privilege c ON b.pri_id=c.id
+					WHERE a.admin_id='.$id
+				.' AND c.module_name="'.MODULE_NAME.'"'
+				.' AND c.controller_name="'.CONTROLLER_NAME.'"'
+				.' AND c.action_name="'.ACTION_NAME.'"';
+			$has=$this->query($sql);
+			if($has[0]['has']>0){
+				return TRUE;
+			}else{
+				return FALSE;
+			}
+		}
+
+	}
+
+	//获取当前管理员前两级的权限
+	public function getBtns(){
+		$id=session('id');
+		/***************** 先取出这个管理员所拥有的所有权限 ********************/
+		if($id ==1){
+			$allPriData=$this->select();
+		}else{
+			$sql='SELECT c.*
+					FROM php38_admin_role a
+					LEFT JOIN php38_role_pri b ON a.role_id = b.role_id
+					LEFT JOIN php38_privilege c ON b.pri_id=c.id
+					WHERE a.admin_id='.$id;
+			$allPriData=$this->query($sql);
+		}
+		/***************** 从所有的权限中提取出前两级的权限 ********************/
+		$btns=array();//保存最终的结果
+		foreach ($allPriData as $k=>$v){
+			if($v['parent_id'] == 0){
+				//再找出这个顶级权限的子权限
+				foreach ($allPriData as $k1=>$v1){
+					if($v1['parent_id'] == $v['id']){
+						//把这个子权限放到顶级权限的children字段中
+						$v['children'][]=$v1;
+					}
+				}
+				$btns[]=$v;
+			}
+		}
+		return $btns;
 	}
 	/************************************ 其他方法 ********************************************/
 	public function _before_delete($option)

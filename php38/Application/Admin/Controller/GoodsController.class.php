@@ -1,7 +1,7 @@
 <?php
 namespace Admin\Controller;
 use Think\Controller;
-class GoodsController extends Controller{
+class GoodsController extends BaseController{
 	//删除
 	public function delete(){
 		//接收商品ID
@@ -12,7 +12,7 @@ class GoodsController extends Controller{
 			$this->success('删除成功!');
 			exit;
 		}else{
-			$this->error('删除失败!');
+			$this->error($model->getError());
 		}
 	}
 	//列表页

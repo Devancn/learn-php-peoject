@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="/Public/Admin/Styles/general.css" rel="stylesheet" type="text/css" />
     <link href="/Public/Admin/Styles/main.css" rel="stylesheet" type="text/css" />
+    <script src="/Public/Admin/Js/jquery-1.7.2.min.js"></script>
 </head>
 <body>
 <h1>

@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="/Public/Admin/Styles/general.css" rel="stylesheet" type="text/css" />
     <link href="/Public/Admin/Styles/main.css" rel="stylesheet" type="text/css" />
+    <script src="/Public/Admin/Js/jquery-1.7.2.min.js"></script>
 </head>
 <body>
 <h1>
@@ -30,7 +31,7 @@
         </p>
     </div>
     <div id="tabbody-div">
-        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/edit/id/31/p/7.html" method="post">
+        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/edit/id/4/p/1.html" method="post">
             <input type="hidden" name="id" value="<?php echo I('get.id');?>">
             <table width="90%" id="general-table" align="center">
                 <tr>

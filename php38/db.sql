@@ -177,3 +177,10 @@ INSERT INTO `php38_privilege` (`id`, `pri_name`, `module_name`, `controller_name
 select a.*,GROUP_CONCAT(c.pri_name) from php38_role a LEFT JOIN php38_role_pri b ON a.id=b.role_id
 LEFT JOIN php38_privilege c ON b.pri_id=c.id;
 
+-- 根据管理员id查找相应的权限
+select COUNT(*) from php38_admin_role a
+left join php38_role_pri b on a.role_id=b.role_id
+left join php38_privilege c on b.pri_id =c.id
+where a.admin_id =8 and module_name='Admin' and c.controller_name='Privilege' and action_name='lst' \G;
+
+SELECT count(*) has FROM php38_admin_role a LEFT JOIN php38_role_pri b ON a.role_id = b.role_id LEFT JOIN php38_privilege c ON b.pri_id=c.id WHERE a.admin_id=8 AND c.module_name="MODEULE_NAME" AND c.controller_name="Role" AND c.action_name="lst"

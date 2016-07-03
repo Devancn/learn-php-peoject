@@ -1,7 +1,7 @@
 <?php
 namespace Admin\Controller;
 use Think\Controller;
-class CategoryController extends Controller{
+class CategoryController extends BaseController{
 	//删除
 	public function delete(){
 		//接收商品ID

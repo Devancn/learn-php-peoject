@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="/Public/Admin/Styles/general.css" rel="stylesheet" type="text/css" />
     <link href="/Public/Admin/Styles/main.css" rel="stylesheet" type="text/css" />
+    <script src="/Public/Admin/Js/jquery-1.7.2.min.js"></script>
 </head>
 <body>
 <h1>
@@ -65,7 +66,8 @@
                 <th>添加时间</th>
                 <th>操作</th>
             </tr>
-            <?php foreach ($data as $k => $v): ?>
+            <?php
+ $priModel=D('Privilege'); foreach ($data as $k => $v): ?>
             <tr>
                 <td><?php echo $v['id']; ?></td>
                 <td><?php echo $v['cat_name'];?></td>
@@ -77,8 +79,10 @@
                 <td><?php echo $v['is_on_sale']; ?></td>
                 <td><?php echo date('Y-m-d H:i:s', $v['addtime']); ?></td>
                 <td align="center">
+                    <?php if($priModel->hasPriTOEditGoods($v['id'])):?>
 	                <a href="<?php echo U('edit?id='.$v['id'].'&p='.I('get.p',1)); ?>" title="编辑">编辑</a> |
 	                <a onclick="return confirm('确定要删除吗？');" href="<?php echo U('delete?id='.$v['id']); ?>" title="移除">移除</a> 
+                    <?php endif;?>
                 </td>
             </tr>
             <?php endforeach; ?>

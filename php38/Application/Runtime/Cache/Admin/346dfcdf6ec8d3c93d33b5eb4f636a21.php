@@ -27,12 +27,14 @@
 <div class="tab-div">
     <div id="tabbar-div">
         <p>
-            <span class="tab-front" id="general-tab">通用信息</span>
+            <span class="tab-front" >基本信息</span>
+            <span class="tab-back" >商品相册</span>
         </p>
     </div>
     <div id="tabbody-div">
         <form enctype="multipart/form-data" action="/index.php/Admin/Goods/add.html" method="post">
-            <table width="90%" id="general-table" align="center">
+            <!--基本信息-->
+            <table width="90%" class="table_form"  align="center">
                 <tr>
                     <td class="label">主分类：</td>
                     <td>
@@ -100,6 +102,17 @@
                     </td>
                 </tr>
             </table>
+            <!--商品相册-->
+            <table style="display:none;" width="90%" class="table_form" align="center">
+                <tr>
+                    <td class="label"><input onclick="$('#pic_ul').append( $('#pic_ul').find('li:eq(0)').clone()  );" type="button" value="添加一张图片" /></td>
+                    <td>
+                        <ul id="pic_ul">
+                            <li><input type="file" name="pic[]" /></li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
             <div class="button-div">
                 <input type="submit" value=" 确定 " class="button"/>
                 <input type="reset" value=" 重置 " class="button" />
@@ -126,6 +139,14 @@
            $(btn).parent().remove();
        }
    }
+    $("#tabbar-div p span").click(function(){
+        // 点击的是第几个按钮
+        var i = $(this).index();
+        // 显示第i个table
+        $(".table_form").hide().eq(i).show();
+        $(".tab-front").removeClass("tab-front").addClass("tab-back");
+        $(this).addClass("tab-front").removeClass("tab-back");
+    });
 </script>
 <div id="footer">
     共执行 3 个查询，用时 0.021251 秒，Gzip 已禁用，内存占用 2.194 MB<br />

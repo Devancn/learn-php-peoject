@@ -25,36 +25,17 @@ class GoodsModel extends Model{
 		/************** 上传图片 **************/
 		//判断用户有没有选择图片
 		if(isset($_FILES['logo']) && $_FILES['logo']['error'] == 0){
-			//上传图片
-			$upload = new \Think\Upload();// 实例化上传类,如果提示上传目录不存在就在Upload(array('maxSize'=>  2 * 1024 * 1024 .....))里面传递一个数组
-			$upload->maxSize   =     2 * 1024 * 1024 ;// 设置附件上传大小(2M)一定小于php.ini中的设置
-			$upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
-			$upload->rootPath  =     './Public/Uploads/'; // 设置附件上传根目录
-			$upload->savePath  =     'Goods/'; // 设置附件上传（子）目录
-			// 上传文件
-			$info  =  $upload->upload();
-			if(!$info) {
-				// 获取失败的原因,并传到模型中
-				$this->error = $upload ->getError();
-				return FALSE; //返回到了控制器,在控制器到会调用$model->getEror()获取到信息并显示
+			$ret=uploadOne('logo','Goods',array(
+				array(650,650),
+				array(130,130)
+			));
+			if($ret['ok'] == 1){
+				$data['logo'] = $ret['images'][0];
+				$data['mid_logo'] = $ret['images'][1];
+				$data['sm_logo'] = $ret['images'][2];
 			}else{
-				/************** 为新上传的图片生成两张缩略图 **************/
-				//先拼出图片的名字
-				$logo=$info['logo']['savepath'].$info['logo']['savename'];
-				$smlogo=$info['logo']['savepath'].'sm_'.$info['logo']['savename'];
-				$midlogo=$info['logo']['savepath'].'mid_'.$info['logo']['savename'];
-				//开始生成缩略图
-				$image = new \Think\Image();
-				//打开源图
-				$image->open('./Public/Uploads/'.$logo);
-				//生成缩略图：从在大->小生成(如果生成多张缩略图的话)
-				//第三个参数:1-6,6种方法,默认是1（按比例缩放）
-				$image->thumb(650, 650,1)->save('./Public/Uploads/'.$midlogo);
-				$image->thumb(130, 130,1)->save('./Public/Uploads/'.$smlogo);
-				//把三个图片的路径保存到商品表中
-				$data['logo']=$logo;
-				$data['sm_logo']=$smlogo;
-				$data['mid_logo']=$midlogo;
+				$this->error=$ret['error'];
+				return FALSE;
 			}
 		}
 	}
@@ -199,6 +180,47 @@ class GoodsModel extends Model{
 					'goods_id' => $data['id'],
 					'cat_id'  => $v,
 				));
+			}
+		}
+		/********** 处理相册图片 ***************/
+		if(hasImage('pic')){
+			//先整理二维数组
+			$_goods_pics=array();
+			foreach ($_FILES['pic']['name'] as $k=>$v){
+				if(empty($v)){
+					continue;
+				}else{
+					$_goods_pics[]=array(
+						'name' => $v,
+						'type' => $_FILES['pic']['type'][$k],
+						'tmp_name' => $_FILES['pic']['tmp_name'][$k],
+						'error' => $_FILES['pic']['error'][$k],
+						'size' => $_FILES['pic']['size'][$k]
+					);
+				}
+			}
+			$gpModel=D('goods_pics');
+			//用整理好的数组覆盖原图片数组,
+			//因为uploadOne函数中会到$_FIELES里找图片
+			$_FILES=$_goods_pics;
+			//循环上传
+			foreach ($_goods_pics as $k=>$v){
+				if(empty($v)){
+					continue;
+				}else{
+					$ret=uploadOne($k,'Goods',array(
+						array(650.650),
+						array(130.130)
+					));
+					if($ret['ok']==1){
+						$gpModel->add(array(
+							'goods_id' =>$data['id'],
+							'pic'=>$ret['images'][0],
+							'mid_pic'=>$ret['images'][1],
+							'sm_pic'=>$ret['images'][2],
+						));
+					}
+				}
 			}
 		}
 	}

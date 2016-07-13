@@ -1,0 +1,6 @@
+[ 2016-07-05T18:27:14+08:00 ] 127.0.0.1 /index.php/Admin/MemberLevel/lst.html
+ERR: 无法加载控制器:MemberLevel
+
+[ 2016-07-05T20:13:19+08:00 ] 127.0.0.1 /index.php/Admin/Login/lohin.html
+ERR: 非法操作:lohin
+

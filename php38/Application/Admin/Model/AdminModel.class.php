@@ -27,6 +27,7 @@ class AdminModel extends Model
 		))->find();
 		if($urser){
 			//判断禁用
+
 			if($urser['status'] == '正常'){
 				if($urser['password'] == md5($password.C('MD5_KEY'))){
 					//登录成功后把 id和 username存到session中

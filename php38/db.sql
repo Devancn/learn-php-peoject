@@ -173,6 +173,19 @@ INSERT INTO `php38_privilege` (`id`, `pri_name`, `module_name`, `controller_name
 (40, 'ajax上传商品相册图片', 'Admin', 'Goods', 'ajax_upload_pic', 3),
 (41, '库存量管理', 'Admin', 'Goods', 'gn', 3);
 
+-- 商品相册
+DROP TABLE IF EXISTS php38_goods_pics;
+CREATE TABLE php38_goods_pics
+(
+	id mediumint unsigned not null auto_increment comment 'Id',
+	goods_id mediumint unsigned not null  comment 'Id',
+	prc varchar(150) not null  comment '原图路径',
+	sm_pic varchar(150) not null  comment '小图路径',
+	mid_pic varchar(150) not null  comment '中图路径',
+	primary key (id),
+	key (goods_id)
+)engine=MyISAM default charset=utf8 comment '商品相册';
+
 -- 根据角色名查询该角色所拥有的权限
 select a.*,GROUP_CONCAT(c.pri_name) from php38_role a LEFT JOIN php38_role_pri b ON a.id=b.role_id
 LEFT JOIN php38_privilege c ON b.pri_id=c.id;

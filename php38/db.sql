@@ -179,7 +179,7 @@ CREATE TABLE php38_goods_pics
 (
 	id mediumint unsigned not null auto_increment comment 'Id',
 	goods_id mediumint unsigned not null  comment 'Id',
-	prc varchar(150) not null  comment '原图路径',
+	pic varchar(150) not null  comment '原图路径',
 	sm_pic varchar(150) not null  comment '小图路径',
 	mid_pic varchar(150) not null  comment '中图路径',
 	primary key (id),
@@ -197,3 +197,6 @@ left join php38_privilege c on b.pri_id =c.id
 where a.admin_id =8 and module_name='Admin' and c.controller_name='Privilege' and action_name='lst' \G;
 
 SELECT count(*) has FROM php38_admin_role a LEFT JOIN php38_role_pri b ON a.role_id = b.role_id LEFT JOIN php38_privilege c ON b.pri_id=c.id WHERE a.admin_id=8 AND c.module_name="MODEULE_NAME" AND c.controller_name="Role" AND c.action_name="lst"
+
+-- 修改商品相册表结构
+ALTER TABLE `php38_goods_pics` CHANGE `prc` `pic` VARCHAR(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '原图路径';

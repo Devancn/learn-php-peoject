@@ -115,9 +115,15 @@ class GoodsController extends BaseController{
 
 		$gcModel=M('goods_ext_cat');
 		$gcData = $gcModel->field('cat_id')->where(array('goods_id' => array('eq',$id)))->select();
+		//取出之前设置的相册图片
+		$gpModel=D('goods_pics');
+		$gpData=$gpModel->where(array(
+			'goods_id'=>array('eq',$id),
+		))->select();
 		//设置页面信息
 		$this->assign(
 			array(
+				'gpData' =>$gpData,
 				'gcData' => $gcData,
 				'cateData'=> $cateData,
 				'_page_title' => '添加商品',
@@ -126,5 +132,19 @@ class GoodsController extends BaseController{
 			)
 		);
 		$this->display();
+	}
+
+	//删除商品相册图片
+	public function ajaxDelPic(){
+		$picId=I('get.pic_id');
+		//删除图片
+		$gpModel=D('goods_pics');
+		//从硬盘上把图片删除掉
+		$p=$gpModel->find($picId);
+		unlink('./Public/Uploads/'.$p['pic']);
+		unlink('./Public/Uploads/'.$p['sm_pic']);
+		unlink('./Public/Uploads/'.$p['mid_pic']);
+		//从数据库中把记录删除
+		$gpModel->delete($picId);
 	}
 }

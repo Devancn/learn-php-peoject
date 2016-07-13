@@ -295,6 +295,47 @@ class GoodsModel extends Model{
 				}
 			}
 		}
+		/********** 处理相册图片 ***************/
+		if(hasImage('pic')){
+			//先整理二维数组
+			$_goods_pics=array();
+			foreach ($_FILES['pic']['name'] as $k=>$v){
+				if(empty($v)){
+					continue;
+				}else{
+					$_goods_pics[]=array(
+						'name' => $v,
+						'type' => $_FILES['pic']['type'][$k],
+						'tmp_name' => $_FILES['pic']['tmp_name'][$k],
+						'error' => $_FILES['pic']['error'][$k],
+						'size' => $_FILES['pic']['size'][$k]
+					);
+				}
+			}
+			$gpModel=D('goods_pics');
+			//用整理好的数组覆盖原图片数组,
+			//因为uploadOne函数中会到$_FIELES里找图片
+			$_FILES=$_goods_pics;
+			//循环上传
+			foreach ($_goods_pics as $k=>$v){
+				if(empty($v)){
+					continue;
+				}else{
+					$ret=uploadOne($k,'Goods',array(
+						array(650.650),
+						array(130.130)
+					));
+					if($ret['ok']==1){
+						$gpModel->add(array(
+							'goods_id' =>$id,
+							'pic'=>$ret['images'][0],
+							'mid_pic'=>$ret['images'][1],
+							'sm_pic'=>$ret['images'][2],
+						));
+					}
+				}
+			}
+		}
 	}
 
 	//执行修改方法之后调用这个方法
@@ -324,7 +365,24 @@ class GoodsModel extends Model{
 		$gcModel = M('goods_ext_cat');
 		//因为这是调用的另一个模型的delete方法,那么在删除之前就先调用另一个的_before_delete
 		$gcModel->where(array('goods_id'=> array('eq',$id)))->delete(); //eq 等于的意思
-	}
+		/********** 删除相册中对应的图片 *************/
+		$gpModel=D('goods_pics');
+		$pics=$gpModel->where(array(
+			'goods_id'=>array('eq',$id),
+		))->select();
+		if($pics){
+			//循环删除硬盘上的图片
+			foreach($pics as $k=>$v){
+				unlink('./Public/Uploads/'.$v['pic']);
+				unlink('./Public/Uploads/'.$v['sm_pic']);
+				unlink('./Public/Uploads/'.$v['mid_pic']);
+			}
+			//把相册表中的数据删除
+			$gpModel->where(array(
+						'goods_id'=>array('eq',$id),
+					))->delete();
+				}
+			}
 
 	//执行删除方法之后调用这个方法
 	protected function _after_delete($option){

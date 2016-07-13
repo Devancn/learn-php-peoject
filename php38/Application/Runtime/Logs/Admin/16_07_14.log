@@ -1,0 +1,12 @@
+[ 2016-07-14T00:16:42+08:00 ] 127.0.0.1 /index.php/Admin/Goods/ajaxDelPic/pic_id/11
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001000s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001000s ]
+SQL: SHOW COLUMNS FROM `php38_privilege` [ RunTime:0.0020s ]
+SQL: SHOW COLUMNS FROM `php38_goods_pics` [ RunTime:0.0020s ]
+SQL: SELECT * FROM `php38_goods_pics` WHERE `id` = 11 LIMIT 1   [ RunTime:0.0000s ]
+SQL: DELETE FROM `php38_goods_pics` WHERE `id` = 11 [ RunTime:0.0000s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
+

@@ -7,7 +7,6 @@ class GoodsController extends BaseController{
 		//接收商品ID
 		$id=I('get.id');
 		$model=D('Goods');
-		$model->delete($id);
 		if(FALSE !== $model->delete($id)){
 			$this->success('删除成功!');
 			exit;
@@ -136,6 +135,7 @@ class GoodsController extends BaseController{
 
 	//删除商品相册图片
 	public function ajaxDelPic(){
+
 		$picId=I('get.pic_id');
 		//删除图片
 		$gpModel=D('goods_pics');
@@ -146,5 +146,6 @@ class GoodsController extends BaseController{
 		unlink('./Public/Uploads/'.$p['mid_pic']);
 		//从数据库中把记录删除
 		$gpModel->delete($picId);
+		return "123456";
 	}
 }

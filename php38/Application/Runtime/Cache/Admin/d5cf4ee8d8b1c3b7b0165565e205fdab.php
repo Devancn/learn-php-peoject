@@ -19,7 +19,7 @@
 
 
 <div class="main-div">
-    <form name="main_form" method="POST" action="/index.php/Admin/Privilege/edit/id/38.html" enctype="multipart/form-data" >
+    <form name="main_form" method="POST" action="/index.php/Admin/Privilege/edit/id/37/p/1.html" enctype="multipart/form-data" >
     	<input type="hidden" name="id" value="<?php echo $data['id']; ?>" />
         <table cellspacing="1" cellpadding="3" width="100%">
 			<tr>

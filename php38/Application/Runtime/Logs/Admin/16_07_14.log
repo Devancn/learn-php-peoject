@@ -10,3 +10,92 @@ INFO: [ app_end ] --START--
 INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001000s ]
 INFO: [ app_end ] --END-- [ RunTime:0.001000s ]
 
+[ 2016-07-14T11:38:32+08:00 ] 127.0.0.1 /index.php/Admin/Goods/ajaxDelPic/pic_id/4
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000715s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001165s ]
+SQL: SHOW COLUMNS FROM `php38_privilege` [ RunTime:0.0033s ]
+SQL: SELECT count(*) has
+					FROM php38_admin_role a
+					LEFT JOIN php38_role_pri b ON a.role_id = b.role_id
+					LEFT JOIN php38_privilege c ON b.pri_id=c.id
+					WHERE a.admin_id=8 AND c.module_name="Admin" AND c.controller_name="Goods" AND c.action_name="ajaxDelPic" [ RunTime:0.0004s ]
+
+[ 2016-07-14T11:38:49+08:00 ] 127.0.0.1 /index.php/Admin/Goods/ajaxDelPic/pic_id/6
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000540s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000936s ]
+SQL: SHOW COLUMNS FROM `php38_privilege` [ RunTime:0.0028s ]
+SQL: SELECT count(*) has
+					FROM php38_admin_role a
+					LEFT JOIN php38_role_pri b ON a.role_id = b.role_id
+					LEFT JOIN php38_privilege c ON b.pri_id=c.id
+					WHERE a.admin_id=8 AND c.module_name="Admin" AND c.controller_name="Goods" AND c.action_name="ajaxDelPic" [ RunTime:0.0003s ]
+
+[ 2016-07-14T11:43:55+08:00 ] 127.0.0.1 /index.php/Admin/Goods/ajaxDelPic/pic_id/5
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000872s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001500s ]
+SQL: SHOW COLUMNS FROM `php38_privilege` [ RunTime:0.0032s ]
+SQL: SELECT count(*) has
+					FROM php38_admin_role a
+					LEFT JOIN php38_role_pri b ON a.role_id = b.role_id
+					LEFT JOIN php38_privilege c ON b.pri_id=c.id
+					WHERE a.admin_id=8 AND c.module_name="Admin" AND c.controller_name="Goods" AND c.action_name="ajaxDelPic" [ RunTime:0.0004s ]
+
+[ 2016-07-14T11:49:15+08:00 ] 127.0.0.1 /index.php/Admin/Goods/ajaxDelPic/pic_id/5
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000452s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000737s ]
+SQL: SHOW COLUMNS FROM `php38_privilege` [ RunTime:0.0025s ]
+SQL: SELECT count(*) has
+					FROM php38_admin_role a
+					LEFT JOIN php38_role_pri b ON a.role_id = b.role_id
+					LEFT JOIN php38_privilege c ON b.pri_id=c.id
+					WHERE a.admin_id=8 AND c.module_name="Admin" AND c.controller_name="Goods" AND c.action_name="ajaxDelPic" [ RunTime:0.0003s ]
+
+[ 2016-07-14T12:04:59+08:00 ] 127.0.0.1 /index.php/Admin/Goods/ajaxDelPic/pic_id/5
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000604s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001231s ]
+SQL: SHOW COLUMNS FROM `php38_privilege` [ RunTime:0.0025s ]
+SQL: SELECT count(*) has
+					FROM php38_admin_role a
+					LEFT JOIN php38_role_pri b ON a.role_id = b.role_id
+					LEFT JOIN php38_privilege c ON b.pri_id=c.id
+					WHERE a.admin_id=8 AND c.module_name="Admin" AND c.controller_name="Goods" AND c.action_name="ajaxDelPic" [ RunTime:0.0004s ]
+
+[ 2016-07-14T12:31:01+08:00 ] 127.0.0.1 /index.php/Admin/Goods/ajaxDelPic/pic_id/8
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000346s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000645s ]
+SQL: SHOW COLUMNS FROM `php38_privilege` [ RunTime:0.0027s ]
+SQL: SELECT count(*) has
+					FROM php38_admin_role a
+					LEFT JOIN php38_role_pri b ON a.role_id = b.role_id
+					LEFT JOIN php38_privilege c ON b.pri_id=c.id
+					WHERE a.admin_id=8 AND c.module_name="Admin" AND c.controller_name="Goods" AND c.action_name="ajaxDelPic" [ RunTime:0.0003s ]
+SQL: SHOW COLUMNS FROM `php38_goods_pics` [ RunTime:0.0022s ]
+SQL: SELECT * FROM `php38_goods_pics` WHERE `id` = 8 LIMIT 1   [ RunTime:0.0002s ]
+SQL: DELETE FROM `php38_goods_pics` WHERE `id` = 8 [ RunTime:0.0002s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000486s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000553s ]
+
+[ 2016-07-14T12:31:32+08:00 ] 127.0.0.1 /index.php/Admin/Goods/ajaxDelPic/pic_id/7
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000460s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000798s ]
+SQL: SHOW COLUMNS FROM `php38_privilege` [ RunTime:0.0024s ]
+SQL: SELECT count(*) has
+					FROM php38_admin_role a
+					LEFT JOIN php38_role_pri b ON a.role_id = b.role_id
+					LEFT JOIN php38_privilege c ON b.pri_id=c.id
+					WHERE a.admin_id=8 AND c.module_name="Admin" AND c.controller_name="Goods" AND c.action_name="ajaxDelPic" [ RunTime:0.0003s ]
+SQL: SHOW COLUMNS FROM `php38_goods_pics` [ RunTime:0.0019s ]
+SQL: SELECT * FROM `php38_goods_pics` WHERE `id` = 7 LIMIT 1   [ RunTime:0.0002s ]
+SQL: DELETE FROM `php38_goods_pics` WHERE `id` = 7 [ RunTime:0.0002s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000535s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000610s ]
+

@@ -223,6 +223,23 @@ class GoodsModel extends Model{
 				}
 			}
 		}
+		/********** 处理会员价格 ***************/
+		$mpData=I('post.member_price');
+		if($mpData){
+			$mpModel=D('member_price');
+			$levelId=I('post.level_id');
+			foreach($mpData as $k => $v){
+				$_price=(float)$v;
+				if($_price == 0){
+					continue;
+				}
+				$mpModel->add(array(
+					'goods_id' => $data['id'],
+					'price' => $v,
+					'level_id'=>$levelId[$k]
+				));
+			}
+		}
 	}
 
 	//执行修改方法之前调用这个方法

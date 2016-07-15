@@ -27,8 +27,10 @@
 <div class="tab-div">
     <div id="tabbar-div">
         <p>
-            <span class="tab-front" >基本信息</span>
-            <span class="tab-back" >商品相册</span>
+            <span class="tab-front">基本信息</span>
+            <span class="tab-back">会员价格</span>
+            <span class="tab-back">商品属性</span>
+            <span class="tab-back">商品相册</span>
         </p>
     </div>
     <div id="tabbody-div">
@@ -102,7 +104,27 @@
                     </td>
                 </tr>
             </table>
-            <!--商品相册-->
+            <!-- 会员价格 -->
+            <table style="display:none;" width="90%" class="table_form" align="center">
+                <tr><td colspan="2" style="color:#F00;font-size:20px;font-weight:bold;padding:10px;">说明：如果指定了价格就使用这个价格，如果没有指定价格就按这个级别的折扣率来计算</td></tr>
+                <?php foreach ($mlData as $k => $v): ?>
+                <tr>
+                    <td width="150"><?php echo $v['level_name']; ?>【<?php echo $v['level_rate']/10; ?>折】 ：</td>
+                    <td>
+                        ￥<input type="text" name="member_price[]" />元
+                        <input type="hidden" name="level_id[]" value="<?php echo $v['id']; ?>" />
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+            <!-- 商品属性 -->
+            <table style="display:none;" width="90%" class="table_form" align="center">
+                <tr>
+                    <td>商品类型：</td>
+                </tr>
+                <tr><td><ul id="attr_list"></ul></td></tr>
+            </table>
+            <!-- 相册 -->
             <table style="display:none;" width="90%" class="table_form" align="center">
                 <tr>
                     <td class="label"><input onclick="$('#pic_ul').append( $('#pic_ul').find('li:eq(0)').clone()  );" type="button" value="添加一张图片" /></td>

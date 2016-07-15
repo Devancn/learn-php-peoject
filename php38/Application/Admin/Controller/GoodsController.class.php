@@ -68,10 +68,13 @@ class GoodsController extends BaseController{
 		//取出所有的分类制作下拉框
 		$catModel=D('Category');
 		$cateData=$catModel->getTree();
-
+		//取出所有会员级别
+		$mlMoldel=D('member_level');
+		$mlData=$mlMoldel->select();
 		//设置页面信息
 		$this->assign(
 			array(
+				'mlData'=>$mlData,
 				'cateData' => $cateData,
 				'_page_title' => '添加商品',
 				'_page_btn_name' => '商品列表',

@@ -186,6 +186,74 @@ CREATE TABLE php38_goods_pics
 	key (goods_id)
 )engine=MyISAM default charset=utf8 comment '商品相册';
 
+-- 会员级别
+DROP TABLE IF EXISTS php38_member_level;
+CREATE TABLE php38_member_level
+(
+	id tinyint unsigned not null auto_increment comment 'Id',
+	level_name varchar(30) not null comment '级别名称',
+	level_rate tinyint unsigned not null default '100' comment '折扣率，100=10折 98=9.8折 90=9折，用时除100',
+	jifen_bottom mediumint unsigned not null comment '积分下限',
+	jifen_top mediumint unsigned not null comment '积分上限',
+	primary key (id)
+)engine=MyISAM default charset=utf8 comment '会员级别';
+
+-- 会员价格
+DROP TABLE IF EXISTS php38_member_price;
+CREATE TABLE php38_member_price
+(
+	goods_id mediumint unsigned not null comment '商品id',
+	level_id tinyint unsigned not null comment '级别id',
+	price decimal(10,2) not null comment '价格',
+	key goods_id(goods_id),
+	key level_id(level_id)
+)engine=MyISAM default charset=utf8 comment '会员价格';
+
+-- 类型
+DROP TABLE IF EXISTS php38_type;
+CREATE TABLE php38_type
+(
+	id tinyint unsigned not null auto_increment comment 'Id',
+	type_name varchar(30) not null comment '类型名称',
+	primary key (id)
+)engine=MyISAM default charset=utf8 comment '类型';
+
+-- 属性
+DROP TABLE IF EXISTS php38_attribute;
+CREATE TABLE php38_attribute
+(
+	id mediumint unsigned not null auto_increment comment 'Id',
+	attr_name varchar(30) not null comment '属性名称',
+	attr_type enum('唯一','可选') not null comment '属性类型',
+	attr_option_values varchar(150) not null default '' comment '属性可选值',
+	type_id tinyint unsigned not null comment '类型id',
+	primary key (id),
+	key type_id(type_id)
+)engine=MyISAM default charset=utf8 comment '属性';
+
+-- 商品属性
+DROP TABLE IF EXISTS php38_goods_attr;
+CREATE TABLE php38_goods_attr
+(
+	id mediumint unsigned not null auto_increment comment 'Id',
+	goods_id mediumint unsigned not null comment '商品id',
+	attr_id mediumint unsigned not null comment '属性id',
+	attr_value varchar(150) not null default '' comment '属性值',
+	primary key (id),
+	key goods_id(goods_id),
+	key attr_id(attr_id)
+)engine=MyISAM default charset=utf8 comment '商品属性';
+
+-- 库存量
+DROP TABLE IF EXISTS php38_goods_number;
+CREATE TABLE php38_goods_number
+(
+	goods_id mediumint unsigned not null comment '商品id',
+	attr_list varchar(150) not null default '' comment '商品属性id，规则 1：如果一件商品有多个属性用，隔开 规则2：如果一件商品有多个属性ID就升降拼字符串，所以如果有两个属性ID5,6,那么不能拼成6,5，我们定义了这个规则之后，前台要取库存量也按这个规则就不会出错',
+	goods_number mediumint unsigned not null comment '库存量',
+	key goods_id(goods_id)
+)engine=MyISAM default charset=utf8 comment '库存量';
+
 -- 根据角色名查询该角色所拥有的权限
 select a.*,GROUP_CONCAT(c.pri_name) from php38_role a LEFT JOIN php38_role_pri b ON a.id=b.role_id
 LEFT JOIN php38_privilege c ON b.pri_id=c.id;

@@ -122,9 +122,25 @@ class GoodsController extends BaseController{
 		$gpData=$gpModel->where(array(
 			'goods_id'=>array('eq',$id),
 		))->select();
+
+		//取出所有会员级别
+		$mlMoldel=D('member_level');
+		$mlData=$mlMoldel->select();
+
+		//取出之前设置的会员价格
+		$mpModel=D('member_price');
+		$_mpData=$mpModel->where(array(
+			'goods_id'=>array('eq',$id),
+		))->select();
+		$mpData=array();
+		foreach($_mpData as $k => $v){
+			$mpData[$v['level_id']]=$v['price'];
+		}
 		//设置页面信息
 		$this->assign(
 			array(
+				'mpData'=>$mpData,
+				'mlData'=>$mlData,
 				'gpData' =>$gpData,
 				'gcData' => $gcData,
 				'cateData'=> $cateData,

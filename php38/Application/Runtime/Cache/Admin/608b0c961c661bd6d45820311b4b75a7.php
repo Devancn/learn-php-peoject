@@ -28,13 +28,13 @@
     <div id="tabbar-div">
         <p>
             <span class="tab-front">基本信息</span>
-            <!--<span class="tab-back">会员价格</span>-->
-            <!--<span class="tab-back">商品属性</span>-->
+            <span class="tab-back">会员价格</span>
+            <span class="tab-back">商品属性</span>
             <span class="tab-back">商品相册</span>
         </p>
     </div>
     <div id="tabbody-div">
-        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/edit/id/40/p/1.html" method="post">
+        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/edit/id/47/p/2.html" method="post">
             <input type="hidden" name="id" value="<?php echo I('get.id'); ?>" />
             <!-- 基本信息 -->
             <table width="90%" class="table_form" id="general-table" align="center">
@@ -43,7 +43,7 @@
                     <td>
                         <select name="cat_id">
                             <option value="">选择分类</option>
-                            <?php foreach ($catData as $k => $v): if($info['cat_id'] == $v['id']) $select = 'selected="selected"'; else $select = ''; ?>
+                            <?php foreach ($cateData as $k => $v): if($info['cat_id'] == $v['id']) $select = 'selected="selected"'; else $select = ''; ?>
                             <option <?php echo $select; ?> value="<?php echo $v['id']; ?>"><?php echo str_repeat('-', $v['level']*8) . $v['cat_name']; ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -58,7 +58,7 @@
                                 <input onclick="add_li(this);" type="button" value="+" />
                                 <select name="ext_cat_id[]">
                                     <option value="">选择分类</option>
-                                    <?php foreach ($catData as $k => $v): ?>
+                                    <?php foreach ($cateData as $k => $v): ?>
                                     <option value="<?php echo $v['id']; ?>"><?php echo str_repeat('-', $v['level']*8) . $v['cat_name']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -69,7 +69,7 @@
                                 <input onclick="add_li(this);" type="button" value="-" />
                                 <select name="ext_cat_id[]">
                                     <option value="">选择分类</option>
-                                    <?php foreach ($catData as $k => $v): if($v1['cat_id'] == $v['id']) $select = 'selected="selected"'; else $select = ''; ?>
+                                    <?php foreach ($cateData as $k => $v): if($v1['cat_id'] == $v['id']) $select = 'selected="selected"'; else $select = ''; ?>
                                     <option <?php echo $select; ?> value="<?php echo $v['id']; ?>"><?php echo str_repeat('-', $v['level']*8) . $v['cat_name']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -119,7 +119,52 @@
                     </td>
                 </tr>
             </table>
+            <!-- 会员价格 -->
+            <table style="display:none;" width="90%" class="table_form" align="center">
+                <tr><td colspan="2" style="color:#F00;font-size:20px;font-weight:bold;padding:10px;">说明：如果指定了价格就使用这个价格，如果没有指定价格就按这个级别的折扣率来计算</td></tr>
+                <?php foreach ($mlData as $k => $v): ?>
+                <tr>
+                    <td width="150"><?php echo $v['level_name']; ?>【<?php echo $v['level_rate']/10; ?>折】 ：</td>
+                    <td>
+                        ￥<input value="<?php echo $mpData[$v['id']]; ?>" type="text" name="member_price[]" />元
+                        <input type="hidden" name="level_id[]" value="<?php echo $v['id']; ?>" />
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+            <!-- 商品属性 -->
+            <table style="display:none;" width="90%" class="table_form" align="center">
+                <tr>
+                    <td>
 
+                        商品类型：
+                        <span style="color:#F00;font-size:30px;font-weight:bold;">如果修改了类型，那么之前设置的库存量和属性都会被删除，请慎重！</span>
+                    </td>
+                </tr>
+                <tr><td><ul id="attr_list">
+                    <?php
+ $attr_id = array(); foreach ($attrData as $k => $v): if(!in_array($v['id'], $attr_id)) { $opt = '+'; $attr_id[] = $v['id']; } else $opt = '-'; ?>
+                    <li>
+                        <input class="attr_id" type="hidden" name="old_attr_id[]" value="<?php echo $v['id']; ?>" />
+                        <?php if($v['attr_type'] == '可选'): ?>
+                        <a onclick="add_li(this);" goods_attr_id="<?php echo $v['goods_attr_id']; ?>" href="javascript:void(0);">[<?php echo $opt; ?>]</a>
+                        <?php endif; ?>
+                        <?php echo $v['attr_name']; ?> :
+                        <?php if(empty($v['attr_option_values'])): ?>
+                        <input name="old_attr_value[<?php echo $v['goods_attr_id']; ?>]" type="text" value="<?php echo $v['attr_value']; ?>" />
+                        <?php else: ?>
+                        <select name="old_attr_value[<?php echo $v['goods_attr_id']; ?>]">
+                            <option value="">请选择</option>
+                            <?php
+ $_attr = explode(',', $v['attr_option_values']); foreach ($_attr as $k1 => $v1): if($v1 == $v['attr_value']) $select = 'selected="selected"'; else $select = ''; ?>
+                            <option <?php echo $select; ?> value="<?php echo $v1; ?>"><?php echo $v1; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <?php endif; ?>
+                    </li>
+                    <?php endforeach; ?>
+                </ul></td></tr>
+            </table>
             <!-- 相册 -->
             <table style="display:none;" width="90%" class="table_form" align="center">
                 <tr>
@@ -138,7 +183,7 @@
                         <ul id="old_pic_ul">
                             <?php foreach ($gpData as $k => $v): ?>
                             <li>
-                                <img src="/Public/Uploads/<?php echo $v['sm_pic']?>" />
+                                <img src="/Public/Uploads/<?php echo $v['sm_pic']; ?>" />
                                 <br /><input pic_id="<?php echo $v['id']; ?>" type="button" value="删除" />
                             </li>
                             <?php endforeach; ?>
@@ -200,9 +245,8 @@
                 success : function(data)
                 {
                     // 把图片从页面中删除掉
-                    //$(this).parent().remove();	  // 这里的$(this)代表的是这个ajax对象并不是按钮
+                    //$(this).parent().remove();    // 这里的$(this)代表的是这个ajax对象并不是按钮
                     btn.parent().remove();
-                    console.log(data);
                 }
             });
         }

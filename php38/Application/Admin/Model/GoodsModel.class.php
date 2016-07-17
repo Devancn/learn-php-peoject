@@ -353,6 +353,26 @@ class GoodsModel extends Model{
 				}
 			}
 		}
+		$mpData=I('post.member_price');
+		$levelId=I('post.level_id');
+		$mpModel=D('member_price');
+		//删除原数据
+		$mpModel->where(array(
+			'goods_id' => $data['id'],
+		))->delete();
+		if($mpData){
+			foreach($mpData as $k => $v){
+				$_price=(float)$v;
+				if($_price == 0){
+					continue;
+				}
+				$mpModel->add(array(
+					'goods_id' => $id,
+					'price' => $v,
+					'level_id'=>$levelId[$k]
+				));
+			}
+		}
 	}
 
 	//执行修改方法之后调用这个方法
@@ -396,11 +416,15 @@ class GoodsModel extends Model{
 			}
 			//把相册表中的数据删除
 			$gpModel->where(array(
-						'goods_id'=>array('eq',$id),
-					))->delete();
-				}
-			}
-
+				'goods_id'=>array('eq',$id),
+			))->delete();
+		}
+		/********** 删除商品对应的会员价格数据 *************/
+		$gpModel = M('member_price');
+		$gpModel->where(array(
+			'goods_id'=>array('eq',$id),
+		))->delete();
+	}
 	//执行删除方法之后调用这个方法
 	protected function _after_delete($option){
 

@@ -15,7 +15,7 @@ return array(
 	'updateFields' => "array('id','level_name','level_rate','jifen_bottom','jifen_top')",
 	'validate' => "
 		array('level_name', 'require', '级别名称不能为空！', 1, 'regex', 3),
-		array('level_name', '1,30', '级别名称的值最长不能超过 30 个字符！', 1, 'length', 3),
+		array('level_name', 'number', '级别名称必须是一个整数！', 1, 'regex', 3),
 		array('level_rate', 'number', '折扣率，100=10折 98=9.8折 90=9折，用时除100必须是一个整数！', 2, 'regex', 3),
 		array('jifen_bottom', 'require', '积分下限不能为空！', 1, 'regex', 3),
 		array('jifen_bottom', 'number', '积分下限必须是一个整数！', 1, 'regex', 3),
@@ -47,6 +47,5 @@ return array(
 	),
 	/**************** 搜索字段的配置 **********************/
 	'search' => array(
-
 	),
 );

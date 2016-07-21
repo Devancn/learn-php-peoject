@@ -45,6 +45,6 @@ return array(
 	/**************** 搜索字段的配置 **********************/
 	'search' => array(
 		array('username', 'normal', '', 'like', '用户名'),
-		array('status', 'in', '正常-正常,禁用-禁用', '', '帐号状态'),
+		array('status', 'in', '正常-正常,禁用-禁用', '', '账号状态'),
 	),
 );

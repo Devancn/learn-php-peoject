@@ -2,6 +2,22 @@
 namespace Admin\Controller;
 use Think\Controller;
 class GoodsController extends BaseController{
+	public function ajaxGetAttr(){
+		$typeId=I('get.type_id');
+		if((int)$typeId==0){
+			echo json_encode(array(
+				'ok'=>0,
+				'error'=>'参数不正确'
+			));
+			exit;
+		}
+		//根据ID取出属性
+		$attrModel=D('Attribute');
+		$attrData=$attrModel->where(array(
+			'type_id'=>array('eq',$typeId)
+		))->select();
+		echo json_encode($attrData);
+	}
 	//删除
 	public function delete(){
 		//接收商品ID

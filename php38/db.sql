@@ -16,6 +16,7 @@ create table php38_goods
   is_on_sale enum('是','否') not null default '是' comment '是否上架',
   addtime int unsigned not null comment '添加时间',
   admin_id mediumint unsigned not null  comment '添加这个商品的管理员id',
+  type_id tinyint unsigned not null default '0' comment '类型id',
   primary key (id),
   key shop_price(shop_price),
   key addtime(addtime),

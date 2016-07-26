@@ -240,6 +240,18 @@ class GoodsModel extends Model{
 				));
 			}
 		}
+		/********** 处理商品属性 ***************/
+		$attrId=I('post.attr_id');
+		$attrValue=I('post.attr_value');
+		//循环属性插入到商品属性表
+		$gaMode=D('goods_attr');
+		foreach($attrId as $k => $v){
+			$gaMode->add(array(
+				'goods_id' => $data['id'],
+				'attr_id' =>$v,
+				'attr_value'=>$attrValue[$k]
+			));
+		}
 	}
 
 	//执行修改方法之前调用这个方法

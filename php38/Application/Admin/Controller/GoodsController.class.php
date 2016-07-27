@@ -2,6 +2,33 @@
 namespace Admin\Controller;
 use Think\Controller;
 class GoodsController extends BaseController{
+	public function goods_number(){
+		$id=I('get.id');//接收商品ID
+		//根据商品ID取出这伯商品所有的可选属性的名称和值
+		$gaModel=D('goods_attr');
+		$gaData=$gaModel->alias('a')
+			->field('a.*,b.attr_name')
+			->join('left join php38_attribute b on a.attr_id=b.id')
+			->where(array(
+				'a.goods_id' => array('eq',$id),
+				'b.attr_type' => array('eq','可选')
+		))->select();
+		//把二维转三维[把属性相同的放到一起]
+		$_gaData=array();
+		foreach ($gaData as $k =>$v){
+			$_gaData[$v['attr_name']][] =$v;
+		}
+		//设置页面信息
+		$this->assign(
+			array(
+				'gaData'=>$_gaData,
+				'_page_title' => '库存明细',
+				'_page_btn_name' => '商品列表',
+				'_page_btn_link' => U('lst?p='.I('get.p'))
+			)
+		);
+		$this->display();
+	}
 	public function ajaxGetAttr(){
 		$typeId=I('get.type_id');
 		if((int)$typeId==0){

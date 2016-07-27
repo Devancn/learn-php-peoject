@@ -80,8 +80,9 @@
                 <td><?php echo date('Y-m-d H:i:s', $v['addtime']); ?></td>
                 <td align="center">
                     <?php if($priModel->hasPriTOEditGoods($v['id'])):?>
+	                <a href="<?php echo U('goods_number?id='.$v['id'].'&p='.I('get.p',1)); ?>" title="库存">库存</a> |
 	                <a href="<?php echo U('edit?id='.$v['id'].'&p='.I('get.p',1)); ?>" title="编辑">编辑</a> |
-	                <a onclick="return confirm('确定要删除吗？');" href="<?php echo U('delete?id='.$v['id']); ?>" title="移除">移除</a> 
+	                <a onclick="return confirm('确定要删除吗？');" href="<?php echo U('delete?id='.$v['id']); ?>" title="移除">移除</a>
                     <?php endif;?>
                 </td>
             </tr>

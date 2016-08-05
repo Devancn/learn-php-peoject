@@ -4,6 +4,47 @@ use Think\Controller;
 class GoodsController extends BaseController{
 	public function goods_number(){
 		$id=I('get.id');//接收商品ID
+		if(IS_POST)
+		{
+			// 循环库存量数组插入到表中
+			$gnModel = D('goods_number');
+			// 先清空之前的库存量
+			$gnModel->where(array(
+				'goods_id' => array('eq', $id),
+			))->delete();
+			$gai = I('post.goods_attr_id');
+			$gn = I('post.gn');
+			// 计算商品属性ID和库存量的比例
+			$rate = count($gai) / count($gn);
+			$_i = 0; // 从第几个商品属性ID中取ID
+			foreach ($gn as $k => $v)
+			{
+				// 从商品属性ID的数组中取出 $rate 个id
+				$_arr = array(); // 存入取出来的商品属性ID
+				$isEmpty = FALSE; // 是否有一个属性没选
+				for($i=0; $i<$rate; $i++) // 循环几次
+				{
+					// 如果商品有属性，那么再判断对应的这个属性是否为空
+					if($gai && empty($gai[$_i]))
+						$isEmpty = TRUE;  // 标识为空
+					$_arr[] = $gai[$_i++];  // 一次拿一个
+				}
+				$_v = (int)$v;
+				// 如果价格不是数字，或者有一个属性为空就跳过这条记录
+				if($_v <= 0 || $isEmpty === TRUE)
+					continue;
+
+				sort($_arr); // 把商品属性ID升降
+				$_att = implode(',', $_arr);
+				$gnModel->add(array(
+					'goods_id' => $id,
+					'goods_number' => $_v,
+					'attr_list' => $_att,
+				));
+			}
+			$this->success('修改成功！', U('lst?p='.I('get.p')));
+			exit;
+		}
 		//根据商品ID取出这伯商品所有的可选属性的名称和值
 		$gaModel=D('goods_attr');
 		$gaData=$gaModel->alias('a')
@@ -88,42 +129,47 @@ class GoodsController extends BaseController{
 
 	// 添加
 	public function add(){
-		//IF里处理表单
-		if(IS_POST){
-			//2.生成模型
-			$model = D ('Goods');
-			//3.接收表单,根据模型中定义的规则验证表单\
-			//第二个参数:1.添加 2.修改
-			if($model->create(I('post.'),1)){
-				//6.表单中的数据插入到数据库中
-				if($model->add()){
-					//7.提示成功信息，并且在1秒之后跳转到商品列表页面
-					$this->success('添加成功',U('lst'));
-					//8.停止后面代码的执行
+		// IF里处理表单
+		if(IS_POST)
+		{
+			//var_dump($_POST);die;
+			// 2. 生成模型
+			$model = D('Goods');
+			// 3. 接收表单，根据模型中定义的规则验证表单
+			// 第二个参数：1.添加 2.修改
+			if($model->create(I('post.'), 1))
+			{
+				// 6. 表单中的数据插入到数据库中
+				if($model->add())
+				{
+					// 7. 提示成功的信息,并且在1秒之后跳转到商品列表页？
+					$this->success('添加成功！', U('lst'));
+					// 8. 停止后面代码的执行
 					exit;
 				}
 			}
-			//4.获取失败的原因
-			$error=$model->getError();
-			//5.打印失败原因,并且3秒之后调回上一个页面
+			// 4. 获取失败的原因
+			$error = $model->getError();
+			// 5. 打印失败原因,并且在3秒之后跳回上一个页面
 			$this->error($error);
 		}
-		//取出所有的分类制作下拉框
-		$catModel=D('Category');
-		$catData=$catModel->getTree();
-		//取出所有会员级别
-		$mlMoldel=D('member_level');
-		$mlData=$mlMoldel->select();
-		//设置页面信息
-		$this->assign(
-			array(
-				'mlData'=>$mlData,
-				'catData' => $catData,
-				'_page_title' => '添加商品',
-				'_page_btn_name' => '商品列表',
-				'_page_btn_link' => U('lst')
-			)
-		);
+
+		// 取出所有的分类制作下拉框
+		$catModel = D('Category');
+		$catData = $catModel->getTree();
+		// 取出所有的会员级别
+		$mlModel = D('member_level');
+		$mlData = $mlModel->select();
+
+		// 设置页面信息
+		$this->assign(array(
+			'mlData' => $mlData,
+			'catData' => $catData,
+			'_page_title' => '添加商品',
+			'_page_btn_name' => '商品列表',
+			'_page_btn_link' => U('lst'),
+		));
+		// 1. 显示添加商品的表单
 		$this->display();
 	}
 	// 修改
@@ -175,13 +221,27 @@ class GoodsController extends BaseController{
 		$_mpData=$mpModel->where(array(
 			'goods_id'=>array('eq',$id),
 		))->select();
-		$mpData=array();
-		foreach($_mpData as $k => $v){
-			$mpData[$v['level_id']]=$v['price'];
+		// 二维转一维
+		$mpData = array();
+		foreach ($_mpData as $k => $v)
+		{
+			$mpData[$v['level_id']] = $v['price'];
 		}
+		// 取出当前这件商品所在类型下的属性
+		// 再连表取出每个属性已经设置的值
+		$attrModel = D('attribute');
+		$attrData = $attrModel->alias('a')
+			->field('a.*,b.id goods_attr_id,b.attr_value')
+			->join('php38_goods_attr b ON (a.id=b.attr_id AND b.goods_id='.$id.')')
+			->where(array(
+				'a.type_id' => $info['type_id'],
+			))
+			->order('a.id ASC,b.id ASC')
+			->select();
 		//设置页面信息
 		$this->assign(
 			array(
+				'attrData' => $attrData,
 				'mpData'=>$mpData,
 				'mlData'=>$mlData,
 				'gpData' =>$gpData,

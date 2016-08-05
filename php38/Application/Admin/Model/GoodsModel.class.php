@@ -2,10 +2,10 @@
 namespace Admin\Model;
 use Think\Model;
 class GoodsModel extends Model{
-	//设置添加时表单中允许接收的字段【安全】
-	protected $insertFields='goods_name,market_price,shop_price,goods_desc,is_on_sale,cat_id';
-	//设置修改时表单中允许接收的字段【安全】
-	protected $updateFields='id,goods_name,market_price,shop_price,goods_desc,is_on_sale,cat_id';
+	// 设置添加时表单中允许接收的字段【安全】
+	protected $insertFields = 'goods_name,market_price,shop_price,goods_desc,is_on_sale,cat_id,type_id';
+	// 设置修改的表单中允许出现的字段
+	protected $updateFields = 'id,goods_name,market_price,shop_price,goods_desc,is_on_sale,cat_id,type_id';
 	//定义表单验证规则
 	protected $_validate=array(
 		array('cat_id','require','必须要选择一个主分类',1),

@@ -149,10 +149,12 @@ class GoodsModel extends Model{
 		 *   GROUP BY a.id
 		 */
 		$data = $this->alias('a')
-			->field('a.*,b.cat_name,GROUP_CONCAT(d.cat_name SEPARATOR "<br />") ext_cat_name')
+			->field('a.*,b.cat_name,GROUP_CONCAT(d.cat_name SEPARATOR "<br />") ext_cat_name,SUM(e.goods_number) gn')
 			->join('LEFT JOIN php38_category b ON a.cat_id=b.id
 		        LEFT JOIN php38_goods_ext_cat c ON a.id=c.goods_id
-		        LEFT JOIN php38_category d ON c.cat_id=d.id')
+		        LEFT JOIN php38_category d ON c.cat_id=d.id
+		        LEFT JOIN php38_goods_number e ON a.id=e.goods_id
+		       ')
 			->where($where)
 			->limit($page->firstRow .','. $page->listRows)
 			->group('a.id')

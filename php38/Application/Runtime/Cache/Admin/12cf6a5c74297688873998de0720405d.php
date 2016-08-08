@@ -64,6 +64,7 @@
                 <th>本店价格</th>
                 <th>是否上架</th>
                 <th>添加时间</th>
+                <th>库存量<th>
                 <th>操作</th>
             </tr>
             <?php
@@ -78,6 +79,7 @@
                 <td><?php echo $v['shop_price']; ?></td>
                 <td><?php echo $v['is_on_sale']; ?></td>
                 <td><?php echo date('Y-m-d H:i:s', $v['addtime']); ?></td>
+                <td><?php echo (int)$v['gn'];?></td>
                 <td align="center">
                     <?php if($priModel->hasPriTOEditGoods($v['id'])):?>
 	                <a href="<?php echo U('goods_number?id='.$v['id'].'&p='.I('get.p',1)); ?>" title="库存">库存</a> |

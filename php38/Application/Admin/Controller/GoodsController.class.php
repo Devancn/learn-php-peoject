@@ -59,10 +59,17 @@ class GoodsController extends BaseController{
 		foreach ($gaData as $k =>$v){
 			$_gaData[$v['attr_name']][] =$v;
 		}
+		//先取出之前设置的库存量数据
+		$gnModel=D('goods_number');
+		$gnData=$gnModel->where(array(
+			'goods_id' => array('eq',$id)
+		))->select();
+
 		//设置页面信息
 		$this->assign(
 			array(
 				'gaData'=>$_gaData,
+				'gnData' =>$gnData,
 				'_page_title' => '库存明细',
 				'_page_btn_name' => '商品列表',
 				'_page_btn_link' => U('lst?p='.I('get.p'))

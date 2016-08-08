@@ -34,7 +34,7 @@
         </p>
     </div>
     <div id="tabbody-div">
-        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/edit/id/46/p/2.html" method="post">
+        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/edit/id/52/p/2.html" method="post">
             <input type="hidden" name="id" value="<?php echo I('get.id'); ?>" />
             <!-- 基本信息 -->
             <table width="90%" class="table_form" id="general-table" align="center">
@@ -135,11 +135,7 @@
             <!-- 商品属性 -->
             <table style="display:none;" width="90%" class="table_form" align="center">
                 <tr>
-                    <td>
-
-                        商品类型：
-                        <span style="color:#F00;font-size:30px;font-weight:bold;">如果修改了类型，那么之前设置的库存量和属性都会被删除，请慎重！</span>
-                    </td>
+                    <td>商品类型：<?php buildSelect('type', 'type_id', 'type_name','id',$info['type_id']); ?></td>
                 </tr>
                 <tr><td><ul id="attr_list">
                     <?php

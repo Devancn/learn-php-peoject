@@ -18,7 +18,7 @@
 <!--内容放的位置-->
 
 
-<form method="post" action="/index.php/Admin/Goods/goods_number/id/52/p/2.html" name="listForm">
+<form method="post" action="/index.php/Admin/Goods/goods_number/id/49/p/2.html" name="listForm">
 	<div class="list-div" id="listDiv">
 		<table cellpadding="3" cellspacing="1">
 			<tr>

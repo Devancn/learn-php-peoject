@@ -2,6 +2,20 @@
 namespace Admin\Controller;
 use Think\Controller;
 class GoodsController extends BaseController{
+	public function ajaxDelGoodsAttr(){
+		$goodsAttrId=I('get.goods_attr_id');
+		//先判断这个属性ID有没有被设置库存量
+		$gnModel=D('goods_number');
+		$id=(int)$goodsAttrId;
+		$has=$gnModel->where("FIND_IN_SET($id,attr_list)")->count();
+		if($has >0){
+			echo 1;//有库存量
+		}else{
+			$gaModel=D('goods_attr');
+			$gaModel->delete($id);
+			echo 0;
+		}
+	}
 	public function goods_number(){
 		$id=I('get.id');//接收商品ID
 		if(IS_POST)

@@ -135,7 +135,10 @@
             <!-- 商品属性 -->
             <table style="display:none;" width="90%" class="table_form" align="center">
                 <tr>
-                    <td>商品类型：<?php buildSelect('type', 'type_id', 'type_name','id',$info['type_id']); ?></td>
+
+                    <td>商品类型：<?php buildSelect('type', 'type_id', 'type_name','id',$info['type_id']); ?>
+                        <span style="color:#F00;font-size:30px;font-weight:bold;">如果修改了类型，那么之前设置的库存量和属性都会被删除，请慎重！</span>
+                    </td>
                 </tr>
                 <tr><td><ul id="attr_list">
                     <?php

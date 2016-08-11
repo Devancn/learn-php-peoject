@@ -3,6 +3,10 @@ namespace Admin\Controller;
 use Think\Controller;
 class LoginController extends Controller
 {
+	public function logout(){
+		session(null);
+		redirect(U('login'));
+	}
 	public function chkcode(){
 		$Verify = new \Think\Verify(
 			$config =    array(

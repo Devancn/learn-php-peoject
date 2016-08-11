@@ -387,6 +387,40 @@ class GoodsModel extends Model{
 				));
 			}
 		}
+		/*********** 判断如果修改了类型，那么就删除之前所有的属性和库存量 *******************/
+		$gaModel = D('goods_attr');
+		$typeId = $this->field('type_id')->find($id);  // 先取出原类型id
+		if($typeId['type_id'] != $data['type_id'])
+		{
+			// 删除所有属性
+			$gaModel->where(array(
+				'goods_id' => array('eq', $id),
+			))->delete();
+			// 删除所有库存量
+			$gnModel = D('goods_number');
+			$gnModel->where(array(
+				'goods_id' => array('eq', $id),
+			))->delete();
+		}
+		/*************** 修改商品属性 *******************/
+		$oldga = I('post.old_attr_value');
+		foreach ($oldga as $k => $v)
+		{
+			$gaModel->where(array(
+				'id' => array('eq', $k),
+			))->setField('attr_value', $v);
+		}
+		/**************** 添加新的商品属性 *****************/
+		$attrId = I('post.attr_id');
+		$attrValue = I('post.attr_value');
+		foreach ($attrValue as $k => $v)
+		{
+			$gaModel->add(array(
+				'goods_id' => $id,
+				'attr_id' => $attrId[$k],
+				'attr_value' => $v,
+			));
+		}
 	}
 
 	//执行修改方法之后调用这个方法

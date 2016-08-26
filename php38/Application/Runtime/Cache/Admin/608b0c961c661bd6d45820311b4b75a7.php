@@ -34,7 +34,7 @@
         </p>
     </div>
     <div id="tabbody-div">
-        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/edit/id/52/p/2.html" method="post">
+        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/edit/id/49/p/2.html" method="post">
             <input type="hidden" name="id" value="<?php echo I('get.id'); ?>" />
             <!-- 基本信息 -->
             <table width="90%" class="table_form" id="general-table" align="center">

@@ -117,5 +117,6 @@ class CategoryModel extends Model{
 				$ret[]=$v;
 			}
 		}
+		return $ret;
 	}
 }

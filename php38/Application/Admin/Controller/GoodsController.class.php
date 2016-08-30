@@ -134,11 +134,11 @@ class GoodsController extends BaseController{
 
 		//取出商品分类制作下拉框
 		$catModel=D('Category');
-		$cateData=$catModel->getTree();
+		$catData=$catModel->getTree();
 		//设置页面信息
 		$this->assign(
 			array(
-				'cateData'=>$cateData,
+				'catData'=>$catData,
 				'_page_title' => '商品列表',
 				'_page_btn_name' => '添加商品',
 				'_page_btn_link' => U('add')
@@ -223,7 +223,7 @@ class GoodsController extends BaseController{
 		$this->assign('info',$info);//分配到修改的表单
 		//取出所有的分类制作下拉框
 		$catModel=D('Category');
-		$cateData=$catModel->getTree();
+		$catData=$catModel->getTree();
 
 		$gcModel=M('goods_ext_cat');
 		$gcData = $gcModel->field('cat_id')->where(array('goods_id' => array('eq',$id)))->select();
@@ -267,7 +267,7 @@ class GoodsController extends BaseController{
 				'mlData'=>$mlData,
 				'gpData' =>$gpData,
 				'gcData' => $gcData,
-				'cateData'=> $cateData,
+				'catData'=> $catData,
 				'_page_title' => '添加商品',
 				'_page_btn_name' => '商品列表',
 				'_page_btn_link' => U('lst?p='.I('get.p'))

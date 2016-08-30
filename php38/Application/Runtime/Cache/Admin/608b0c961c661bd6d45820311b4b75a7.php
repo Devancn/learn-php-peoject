@@ -24,17 +24,23 @@
 <script type="text/javascript" charset="utf-8" src="/Public/umeditor1_2_2-utf8-php/umeditor.min.js"></script>
 <script type="text/javascript" src="/Public/umeditor1_2_2-utf8-php/lang/zh-cn/zh-cn.js"></script>
 
+<!-- 时间插件 -->
+<link href="/Public/datepicker/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" charset="utf-8" src="/Public/datepicker/jquery-ui-1.9.2.custom.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/Public/datepicker/datepicker-zh_cn.js"></script>
+
 <div class="tab-div">
     <div id="tabbar-div">
         <p>
             <span class="tab-front">基本信息</span>
+            <span class="tab-back">商品描述</span>
             <span class="tab-back">会员价格</span>
             <span class="tab-back">商品属性</span>
             <span class="tab-back">商品相册</span>
         </p>
     </div>
     <div id="tabbody-div">
-        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/edit/id/49/p/2.html" method="post">
+        <form enctype="multipart/form-data" action="/index.php/Admin/Goods/edit/id/51/p/3.html" method="post">
             <input type="hidden" name="id" value="<?php echo I('get.id'); ?>" />
             <!-- 基本信息 -->
             <table width="90%" class="table_form" id="general-table" align="center">
@@ -43,7 +49,7 @@
                     <td>
                         <select name="cat_id">
                             <option value="">选择分类</option>
-                            <?php foreach ($cateData as $k => $v): if($info['cat_id'] == $v['id']) $select = 'selected="selected"'; else $select = ''; ?>
+                            <?php foreach ($catData as $k => $v): if($info['cat_id'] == $v['id']) $select = 'selected="selected"'; else $select = ''; ?>
                             <option <?php echo $select; ?> value="<?php echo $v['id']; ?>"><?php echo str_repeat('-', $v['level']*8) . $v['cat_name']; ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -58,7 +64,7 @@
                                 <input onclick="add_li(this);" type="button" value="+" />
                                 <select name="ext_cat_id[]">
                                     <option value="">选择分类</option>
-                                    <?php foreach ($cateData as $k => $v): ?>
+                                    <?php foreach ($catData as $k => $v): ?>
                                     <option value="<?php echo $v['id']; ?>"><?php echo str_repeat('-', $v['level']*8) . $v['cat_name']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -69,7 +75,7 @@
                                 <input onclick="add_li(this);" type="button" value="-" />
                                 <select name="ext_cat_id[]">
                                     <option value="">选择分类</option>
-                                    <?php foreach ($cateData as $k => $v): if($v1['cat_id'] == $v['id']) $select = 'selected="selected"'; else $select = ''; ?>
+                                    <?php foreach ($catData as $k => $v): if($v1['cat_id'] == $v['id']) $select = 'selected="selected"'; else $select = ''; ?>
                                     <option <?php echo $select; ?> value="<?php echo $v['id']; ?>"><?php echo str_repeat('-', $v['level']*8) . $v['cat_name']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -106,14 +112,39 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="label">促销价格：</td>
+                    <td>
+                        开始时间：<input type="text" value="<?php echo date('Y-m-d', $info['promote_start_date']); ?>" id="promote_start_date" name="promote_start_date" />
+                        结束时间：<input type="text" value="<?php echo date('Y-m-d', $info['promote_end_date']); ?>" id="promote_end_date" name="promote_end_date" />
+                        促销价格：￥ <input type="text" value="<?php echo $info['promote_price']; ?>" name="promote_price" /> 元
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">是否推荐：</td>
+                    <td>
+                        新品 <input <?php if($info['is_new'] == '是') echo 'checked="checked"'; ?> type="checkbox" name="is_new" value="是" />
+                        热销 <input <?php if($info['is_hot'] == '是') echo 'checked="checked"'; ?> type="checkbox" name="is_hot" value="是" />
+                        推荐 <input <?php if($info['is_rec'] == '是') echo 'checked="checked"'; ?> type="checkbox" name="is_rec" value="是" />
+                        楼层 <input <?php if($info['is_floor'] == '是') echo 'checked="checked"'; ?> type="checkbox" name="is_floor" value="是" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">排序：</td>
+                    <td>
+                        <input type="text" name="sort_number" value="<?php echo $info['sort_number']; ?>" /> 越小越靠前
+                    </td>
+                </tr>
+                <tr>
                     <td class="label">商品图片：</td>
                     <td>
                         <input type="file" name="logo" /><br />
                         <img src="/Public/Uploads/<?php echo $info['sm_logo']; ?>" />
                     </td>
                 </tr>
+            </table>
+            <!-- 商品描述 -->
+            <table style="display:none;" width="100%" class="table_form" align="center">
                 <tr>
-                    <td class="label">商品描述：</td>
                     <td>
                         <textarea id="goods_desc" name="goods_desc" cols="40" rows="3"><?php echo $info['goods_desc']; ?></textarea>
                     </td>
@@ -135,8 +166,9 @@
             <!-- 商品属性 -->
             <table style="display:none;" width="90%" class="table_form" align="center">
                 <tr>
+                    <td>
 
-                    <td>商品类型：<?php buildSelect('type', 'type_id', 'type_name','id',$info['type_id']); ?>
+                        商品类型：<?php buildSelect('type', 'type_id', 'type_name', 'id', $info['type_id']); ?>
                         <span style="color:#F00;font-size:30px;font-weight:bold;">如果修改了类型，那么之前设置的库存量和属性都会被删除，请慎重！</span>
                     </td>
                 </tr>
@@ -200,6 +232,10 @@
 </div>
 
 <script>
+    $("#promote_start_date").datepicker({ dateFormat: "yy-mm-dd" });
+    $("#promote_end_date").datepicker({ dateFormat: "yy-mm-dd" });
+
+
     UM.getEditor('goods_desc', {
         initialFrameWidth : '100%',
         initialFrameHeight : 500
@@ -244,7 +280,7 @@
                 success : function(data)
                 {
                     // 把图片从页面中删除掉
-                    //$(this).parent().remove();    // 这里的$(this)代表的是这个ajax对象并不是按钮
+                    //$(this).parent().remove();	  // 这里的$(this)代表的是这个ajax对象并不是按钮
                     btn.parent().remove();
                 }
             });

@@ -280,3 +280,5 @@ SELECT count(*) has FROM php38_admin_role a LEFT JOIN php38_role_pri b ON a.role
 
 -- 修改商品相册表结构
 ALTER TABLE `php38_goods_pics` CHANGE `prc` `pic` VARCHAR(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '原图路径';
+
+

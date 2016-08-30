@@ -3,9 +3,9 @@ namespace Admin\Model;
 use Think\Model;
 class GoodsModel extends Model{
 	// 设置添加时表单中允许接收的字段【安全】
-	protected $insertFields = 'goods_name,market_price,shop_price,goods_desc,is_on_sale,cat_id,type_id';
+	protected $insertFields = 'goods_name,market_price,shop_price,goods_desc,is_on_sale,cat_id,type_id,promote_price,promote_start_date,promote_end_date,is_hot,is_rec,is_new';
 	// 设置修改的表单中允许出现的字段
-	protected $updateFields = 'id,goods_name,market_price,shop_price,goods_desc,is_on_sale,cat_id,type_id';
+	protected $updateFields = 'id,goods_name,market_price,shop_price,goods_desc,is_on_sale,cat_id,type_id,promote_price,promote_start_date,promote_end_date,is_hot,is_rec,is_new';
 	//定义表单验证规则
 	protected $_validate=array(
 		array('cat_id','require','必须要选择一个主分类',1),
@@ -17,6 +17,12 @@ class GoodsModel extends Model{
 	//TP在执行add方法时会先调用这个方法[在记录插入到数据库之前，给我们一个机会修改表单中的数据]
 	//$datra :代表表单中的数据
 	protected function _before_insert(&$data,$option){
+		if($data['promote_price']){
+			$sd = I('post.promote_start_date');
+			$ed = I('post.promote_end_date');
+			$data['promote_start_date'] = strtotime("$sd 00:00:00");
+			$data['promote_end_date'] = strtotime("$ed 23:59:59");
+		}
 		$data['admin_id']=session('id');
 		//使用自己定义的函数过滤
 		$data['goods_desc'] = removeXSS($_POST['goods_desc']);
@@ -259,6 +265,12 @@ class GoodsModel extends Model{
 	//执行修改方法之前调用这个方法
 	protected function _before_update(&$data,$option){
 		/********** 处理表单中扩展分类的代码 ***************/
+		if($data['promote_price']){
+			$sd = I('post.promote_start_date');
+			$ed = I('post.promote_end_date');
+			$data['promote_start_date'] = strtotime("$sd 00:00:00");
+			$data['promote_end_date'] = strtotime("$ed 23:59:59");
+		}
 		$id=I('post.id');
 		$priModel=D('Privilege');
 		if(!$priModel->hasPriTOEditGoods($id)){

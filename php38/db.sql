@@ -17,12 +17,23 @@ create table php38_goods
   addtime int unsigned not null comment '添加时间',
   admin_id mediumint unsigned not null  comment '添加这个商品的管理员id',
   type_id tinyint unsigned not null default '0' comment '类型id',
+  promote_price decimal(10,2) not null default '0'comment '促销价格',
+  promote_start_date int unsigned not null default '0' comment '促销开始时间',
+  promote_end_date int unsigned not null default '0' comment '促销结束时间',
+  is_hot enum('是','否') not null default '否', comment '是否热销',
+  is_rec enum('是','否') not null default '否', comment '是否推荐',
+  is_new enum('是','否') not null default '否', comment '是否新品',
   primary key (id),
   key shop_price(shop_price),
   key addtime(addtime),
   key admin_id(admin_id),
   key cat_id(cat_id),
-  key is_on_sale(is_on_sale)
+  key promote_start_date(promote_start_date),
+  key promote_end_date(promote_end_date),
+  key is_on_sale(is_on_sale),
+  key is_hot(is_hot),
+  key is_rec(is_rec),
+  key is_new(is_new),
 )engine=myisam default charset=utf8;
 -- 修改字段名
 alter table php38_goods change column smg_logo sm_logo  varchar(150) not null default '' comment '小图片';

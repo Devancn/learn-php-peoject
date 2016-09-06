@@ -264,6 +264,15 @@ class GoodsModel extends Model{
 
 	//执行修改方法之前调用这个方法
 	protected function _before_update(&$data,$option){
+		if(empty($data['is_new'])){
+			$data['is_new'] = '否';
+		}
+		if(empty($data['is_hot'])){
+			$data['is_hot'] = '否';
+		}
+		if(empty($data['is_rec'])){
+			$data['is_rec'] = '否';
+		}
 		/********** 处理表单中扩展分类的代码 ***************/
 		if($data['promote_price']){
 			$sd = I('post.promote_start_date');

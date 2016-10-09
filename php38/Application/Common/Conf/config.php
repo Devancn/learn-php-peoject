@@ -1,6 +1,6 @@
 <?php
 return array(
-	'SHOW_PAGE_TRACE' => TRUE,
+	'SHOW_PAGE_TRACE' => FALSE,
 	'URL_PATHINFO_DEPR' => '/',
 	'DEFAULT_FILTER' => 'trim,htmlspecialchars',
 	'DB_TYPE' => 'mysql', // mysql,mysqli,pdo

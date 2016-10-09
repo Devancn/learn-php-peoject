@@ -24,32 +24,36 @@ class RoleModel extends Model
 		$data['page'] = $page->show();
 		/************************************** 取数据 ******************************************/
 		/**
-		 * SELECT a.*,GROUP_CONCAT(c.pri_name) pri_name FROM php38_role a LEFT JOIN php38_role_pri b ON a.id=b.role_id LEFT JOIN php38_privilege c ON b.pri_id=c.id GROUP BY a.id
+		 * SELECT a.*,GROUP_CONCAT(c.pri_name) pri_name From php38_role a LEFT JOIN
+php38_role_pri b ON a.id=b.role_id LEFT JOIN php38_privilege c ON b.pri_id=c.id
+GROUP BY a.id;
 		 */
 		$data['data'] = $this->alias('a')
-			->field('a.*,GROUP_CONCAT(c.pri_name) pri_name')
-			->where($where)
-			->join('LEFT JOIN php38_role_pri b ON a.id=b.role_id LEFT JOIN php38_privilege c ON b.pri_id=c.id')
-			->group('a.id')
-			->limit($page->firstRow.','.$page->listRows)
-			->select();
+		->field('a.*,GROUP_CONCAT(c.pri_name) pri_name')
+		->where($where)
+		->join('LEFT JOIN php38_role_pri b ON a.id=b.role_id LEFT JOIN php38_privilege c ON b.pri_id=c.id')
+		->group('a.id')
+		->limit($page->firstRow.','.$page->listRows)
+		->select();
 		return $data;
 	}
 	// 添加前
 	protected function _before_insert(&$data, $option)
 	{
 	}
-	// 添加完角色之后执行,其中$data['id']就表示刚刚添加的角色的ID
+	// 添加完角色之后执行，其中$data['id']就代表刚刚添加的角色的ID
 	protected function _after_insert($data, $option)
 	{
-		//*****************把这个角色拥有的权限保存到角色权限表
-		$priId=I('post.pri_id');
-		if($priId){
-			$priModel=M('role_pri');
-			foreach ($priId as $v){
-				$priModel->add(array(
+		//************ 把这个角色拥有的权限保存到角色权限表
+		$priId = I('post.pri_id');
+		if($priId)
+		{
+			$riModel = M('role_pri');
+			foreach ($priId as $v)
+			{
+				$riModel->add(array(
 					'role_id' => $data['id'],
-					'pri_id' => $v
+					'pri_id' => $v,
 				));
 			}
 		}
@@ -57,20 +61,21 @@ class RoleModel extends Model
 	// 修改前
 	protected function _before_update(&$data, $option)
 	{
-		//*****************把这个角色拥有的权限保存到角色权限表
-		$id=I('post.id');
-		$priId=I('post.pri_id');
-		//先删除原数据
-		$riModel=M('role_pri');
+		$id = I('post.id'); // 角色ID
+		//************ 把这个角色拥有的权限保存到角色权限表
+		$priId = I('post.pri_id');
+		// 先删除原数据
+		$riModel = M('role_pri');
 		$riModel->where(array(
-			'role_id'=>array('eq',$id)
+			'role_id' => array('eq', $id),
 		))->delete();
-		if($priId){
-			$priModel=M('role_pri');
-			foreach ($priId as $v){
-				$priModel->add(array(
+		if($priId)
+		{
+			foreach ($priId as $v)
+			{
+				$riModel->add(array(
 					'role_id' => $id,
-					'pri_id' => $v
+					'pri_id' => $v,
 				));
 			}
 		}
@@ -80,7 +85,7 @@ class RoleModel extends Model
 	{
 		$rpModel = M('role_pri');
 		$rpModel->where(array(
-			'role_id'=>array('eq',I('get.id'))
+			'role_id' => array('eq', I('get.id')),
 		))->delete();
 	}
 	/************************************ 其他方法 ********************************************/

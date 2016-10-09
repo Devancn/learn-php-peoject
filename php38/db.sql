@@ -1,83 +1,67 @@
-create database php38;
-use php38;
-set names utf8;
-drop table if exists php38_goods;
-create table php38_goods
+CREATE DATABASE php38;
+USE php38;
+SET NAMES utf8;
+
+DROP TABLE IF EXISTS php38_goods;
+CREATE TABLE php38_goods
 (
-  id mediumint unsigned not null auto_increment comment 'ID',
-  cat_id mediumint unsigned not null  comment '主分类id',
-  goods_name varchar(150) not null comment '商品名称',
-  market_price decimal(10,2) not null comment '市场价格',
-  shop_price decimal(10,2) not null comment '商城价格',
-  logo varchar(150) not null default '' comment '图片',
-  smg_logo varchar(150) not null default '' comment '小图片',
-  mid_logo varchar(150) not null default '' comment '中图片',
-  goods_desc longtext comment '商品描述',
-  is_on_sale enum('是','否') not null default '是' comment '是否上架',
-  addtime int unsigned not null comment '添加时间',
-  admin_id mediumint unsigned not null  comment '添加这个商品的管理员id',
-  type_id tinyint unsigned not null default '0' comment '类型id',
-  promote_price decimal(10,2) not null default '0'comment '促销价格',
-  promote_start_date int unsigned not null default '0' comment '促销开始时间',
-  promote_end_date int unsigned not null default '0' comment '促销结束时间',
-  is_hot enum('是','否') not null default '否', comment '是否热销',
-  is_rec enum('是','否') not null default '否', comment '是否推荐',
-  is_new enum('是','否') not null default '否', comment '是否新品',
-  primary key (id),
-  key shop_price(shop_price),
-  key addtime(addtime),
-  key admin_id(admin_id),
-  key cat_id(cat_id),
-  key promote_start_date(promote_start_date),
-  key promote_end_date(promote_end_date),
-  key is_on_sale(is_on_sale),
-  key is_hot(is_hot),
-  key is_rec(is_rec),
-  key is_new(is_new),
-)engine=myisam default charset=utf8;
--- 修改字段名
-alter table php38_goods change column smg_logo sm_logo  varchar(150) not null default '' comment '小图片';
-alter table php38_goods add index admin_id(admin_id);
+	id mediumint unsigned not null auto_increment comment 'Id',
+	cat_id mediumint unsigned not null comment '主分类id',
+	goods_name varchar(150) not null comment '商品名称',
+	market_price decimal(10,2) not null comment '市场价格',
+	shop_price decimal(10,2) not null comment '本店价格',
+	logo varchar(150) not null default '' comment '图片',
+	sm_logo varchar(150) not null default '' comment '小图片',
+	mid_logo varchar(150) not null default '' comment '中图片',
+	goods_desc longtext comment '商品描述',
+	is_on_sale enum('是','否') not null default '是' comment '是否上架',
+	addtime int unsigned not null comment '添加时间',
+	admin_id mediumint unsigned not null comment '添加这件商品的管理员id',
+	type_id tinyint unsigned not null default '0' comment '类型id',
+	promote_price decimal(10,2) not null default '0.00' comment '促销价格',
+	promote_start_date int unsigned not null default '0' comment '促销开始时间',
+	promote_end_date int unsigned not null default '0' comment '促销结束时间',
+	is_hot enum('是','否') not null default '否' comment '是否热销',
+	is_rec enum('是','否') not null default '否' comment '是否推荐',
+	is_new enum('是','否') not null default '否' comment '是否新品',
+	is_floor enum('是','否') not null default '否' comment '是否推荐到楼层',
+	sort_number tinyint unsigned not null default '100' comment '排序的数字',
+	primary key (id),
+	key shop_price(shop_price),
+	key addtime(addtime),
+	key cat_id(cat_id),
+	key admin_id(admin_id),
+	key promote_start_date(promote_start_date),
+	key promote_end_date(promote_end_date),
+	key is_hot(is_hot),
+	key is_rec(is_rec),
+	key is_new(is_new),
+	key is_floor(is_floor),
+	key is_on_sale(is_on_sale)
+)engine=MyISAM default charset=utf8;
 
-drop table if exists php38_category;
-create table php38_category
+DROP TABLE IF EXISTS php38_goods_ext_cat;
+CREATE TABLE php38_goods_ext_cat
 (
-  id mediumint unsigned not null auto_increment comment 'ID',
-  cat_name varchar(150) not null comment '分类名称',
-  parent_id mediumint unsigned not null default '0' comment '上级分类ID,0:代表顶级分类',
-  primary key (id)
-)engine=myisam default charset=utf8;
+	goods_id mediumint unsigned not null comment '商品Id',
+	cat_id mediumint unsigned not null comment '分类Id',
+	key goods_id(goods_id),
+	key cat_id(cat_id)
+)engine=MyISAM default charset=utf8 comment '商品的扩展分类';
 
---
--- 转存表中的数据 `php38_category`
---
+DROP TABLE IF EXISTS php38_category;
+CREATE TABLE php38_category
+(
+	id mediumint unsigned not null auto_increment comment 'Id',
+	cat_name varchar(150) not null comment '分类名称',
+	parent_id mediumint unsigned not null default '0' comment '上级分类ID，0：代表顶级分类',
+	is_floor enum('是','否') not null default '否' comment '是否推荐到楼层',
+	primary key (id),
+	key is_floor(is_floor)
+)engine=MyISAM default charset=utf8 comment '分类';
 
-INSERT INTO `php38_category` (`id`, `cat_name`, `parent_id`) VALUES
-(1, '家用电器', 0),
-(2, '手机、数码、京东通信', 0),
-(3, '电脑、办公', 0),
-(4, '家居、家具、家装、厨具', 0),
-(5, '男装、女装、内衣、珠宝', 0),
-(6, '个护化妆', 0),
-(7, '鞋靴、箱包、钟表、奢侈品', 0),
-(8, '运动户外', 0),
-(9, '汽车、汽车用品', 0),
-(10, '母婴、玩具乐器', 0),
-(11, '食品、酒类、生鲜、特产', 0),
-(12, '营养保健', 0),
-(13, '图书、音像、电子书', 0),
-(14, '彩票、旅行、充值、票务', 0),
-(15, '理财、众筹、白条、保险', 0),
-(16, '大家电', 1),
-(17, '生活电器', 1),
-(18, '厨房电器', 1),
-(19, '个护健康', 1),
-(20, '五金家装', 1);
+/*********************** RBAC ****************************/
 
-ALTER TABLE php38_goods  ADD cat_id mediumint unsigned not null  comment '主分类id';
-
-/******************************** RBAC  *******************************/
--- 权限表
 DROP TABLE IF EXISTS php38_privilege;
 CREATE TABLE php38_privilege
 (
@@ -90,7 +74,6 @@ CREATE TABLE php38_privilege
 	primary key (id)
 )engine=MyISAM default charset=utf8 comment '权限';
 
--- 角色拥有的权限
 DROP TABLE IF EXISTS php38_role_pri;
 CREATE TABLE php38_role_pri
 (
@@ -100,7 +83,6 @@ CREATE TABLE php38_role_pri
 	key pri_id(pri_id)
 )engine=MyISAM default charset=utf8 comment '角色拥有的权限';
 
--- 角色表
 DROP TABLE IF EXISTS php38_role;
 CREATE TABLE php38_role
 (
@@ -109,7 +91,6 @@ CREATE TABLE php38_role
 	primary key (id)
 )engine=MyISAM default charset=utf8 comment '角色';
 
--- 管理员所在角色
 DROP TABLE IF EXISTS php38_admin_role;
 CREATE TABLE php38_admin_role
 (
@@ -119,7 +100,6 @@ CREATE TABLE php38_admin_role
 	key admin_id(admin_id)
 )engine=MyISAM default charset=utf8 comment '管理员所在角色';
 
--- 管理员表
 DROP TABLE IF EXISTS php38_admin;
 CREATE TABLE php38_admin
 (
@@ -131,7 +111,6 @@ CREATE TABLE php38_admin
 )engine=MyISAM default charset=utf8 comment '管理员';
 INSERT INTO php38_admin VALUES(1,'root','99de37ebe3fc968924ff1d82dec33cd2','正常');
 
--- 管理员可以管理的分类
 DROP TABLE IF EXISTS php38_admin_goods_cat;
 CREATE TABLE php38_admin_goods_cat
 (
@@ -185,20 +164,18 @@ INSERT INTO `php38_privilege` (`id`, `pri_name`, `module_name`, `controller_name
 (40, 'ajax上传商品相册图片', 'Admin', 'Goods', 'ajax_upload_pic', 3),
 (41, '库存量管理', 'Admin', 'Goods', 'gn', 3);
 
--- 商品相册
 DROP TABLE IF EXISTS php38_goods_pics;
 CREATE TABLE php38_goods_pics
 (
 	id mediumint unsigned not null auto_increment comment 'Id',
-	goods_id mediumint unsigned not null  comment 'Id',
-	pic varchar(150) not null  comment '原图路径',
-	sm_pic varchar(150) not null  comment '小图路径',
-	mid_pic varchar(150) not null  comment '中图路径',
+	goods_id mediumint unsigned not null comment '商品id',
+	pic varchar(150) not null comment '原图路径',
+	sm_pic varchar(150) not null comment '小图路径',
+	mid_pic varchar(150) not null comment '中图路径',
 	primary key (id),
-	key (goods_id)
-)engine=MyISAM default charset=utf8 comment '商品相册';
+	key goods_id(goods_id)
+)engine=MyISAM default charset=utf8 comment '相册';
 
--- 会员级别
 DROP TABLE IF EXISTS php38_member_level;
 CREATE TABLE php38_member_level
 (
@@ -210,7 +187,6 @@ CREATE TABLE php38_member_level
 	primary key (id)
 )engine=MyISAM default charset=utf8 comment '会员级别';
 
--- 会员价格
 DROP TABLE IF EXISTS php38_member_price;
 CREATE TABLE php38_member_price
 (
@@ -221,7 +197,6 @@ CREATE TABLE php38_member_price
 	key level_id(level_id)
 )engine=MyISAM default charset=utf8 comment '会员价格';
 
--- 类型
 DROP TABLE IF EXISTS php38_type;
 CREATE TABLE php38_type
 (
@@ -230,7 +205,6 @@ CREATE TABLE php38_type
 	primary key (id)
 )engine=MyISAM default charset=utf8 comment '类型';
 
--- 属性
 DROP TABLE IF EXISTS php38_attribute;
 CREATE TABLE php38_attribute
 (
@@ -243,7 +217,6 @@ CREATE TABLE php38_attribute
 	key type_id(type_id)
 )engine=MyISAM default charset=utf8 comment '属性';
 
--- 商品属性
 DROP TABLE IF EXISTS php38_goods_attr;
 CREATE TABLE php38_goods_attr
 (
@@ -256,7 +229,6 @@ CREATE TABLE php38_goods_attr
 	key attr_id(attr_id)
 )engine=MyISAM default charset=utf8 comment '商品属性';
 
--- 库存量
 DROP TABLE IF EXISTS php38_goods_number;
 CREATE TABLE php38_goods_number
 (
@@ -266,19 +238,11 @@ CREATE TABLE php38_goods_number
 	key goods_id(goods_id)
 )engine=MyISAM default charset=utf8 comment '库存量';
 
--- 根据角色名查询该角色所拥有的权限
-select a.*,GROUP_CONCAT(c.pri_name) from php38_role a LEFT JOIN php38_role_pri b ON a.id=b.role_id
-LEFT JOIN php38_privilege c ON b.pri_id=c.id;
 
--- 根据管理员id查找相应的权限
-select COUNT(*) from php38_admin_role a
-left join php38_role_pri b on a.role_id=b.role_id
-left join php38_privilege c on b.pri_id =c.id
-where a.admin_id =8 and module_name='Admin' and c.controller_name='Privilege' and action_name='lst' \G;
 
-SELECT count(*) has FROM php38_admin_role a LEFT JOIN php38_role_pri b ON a.role_id = b.role_id LEFT JOIN php38_privilege c ON b.pri_id=c.id WHERE a.admin_id=8 AND c.module_name="MODEULE_NAME" AND c.controller_name="Role" AND c.action_name="lst"
 
--- 修改商品相册表结构
-ALTER TABLE `php38_goods_pics` CHANGE `prc` `pic` VARCHAR(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '原图路径';
+
+
+
 
 

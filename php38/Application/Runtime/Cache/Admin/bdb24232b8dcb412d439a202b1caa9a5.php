@@ -125,8 +125,8 @@
             <li style="border-right:none"><a href="#">刷新</a></li>
         </ul>
         <div id="send_info">
-            <a href="#" target="main-frame" class="fix-submenu">清除缓存</a>
-            <a href="<?php echo U('Login/logout')?>" target="_top" class="fix-submenu">退出</a>
+            <a href="<?php echo U('Goods/clearCache'); ?>" target="main-frame" class="fix-submenu">清除缓存</a>
+            <a href="<?php echo U('Login/logout'); ?>" target="_top" class="fix-submenu">退出</a>
         </div>
     </div>
 </div>

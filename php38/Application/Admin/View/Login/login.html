@@ -7,7 +7,7 @@
 <link href="__PUBLIC__/Admin/Styles/main.css" rel="stylesheet" type="text/css" />
 </head>
 <body style="background: #278296;color:white">
-<form method="post" action="__SELF__"onsubmit="return validate()">
+<form method="post" action="__SELF__">
     <table cellspacing="0" cellpadding="0" style="margin-top:100px" align="center">
         <tr>
             <td>
@@ -35,13 +35,9 @@
                     </tr>
                     <tr>
                         <td colspan="2" align="right">
-                            <!--第一种-->
-                            <img style="cursor: pointer" onclick="this.src='<?php echo U('login/chkcode');?>?'+Math.random();" src="<?php echo U('login/chkcode')?>"/>
-                            <!--第二种-->
-                            <!--<img src="__CONTROLLER__/chkcode" />-->
+                            <img style="cursor:pointer;" onclick="this.src='<?php echo U('Login/chkcode'); ?>?'+Math.random();" src="<?php echo U('Login/chkcode'); ?>" />
                         </td>
                     </tr>
-
                     <tr>
                         <td>&nbsp;</td>
                         <td>

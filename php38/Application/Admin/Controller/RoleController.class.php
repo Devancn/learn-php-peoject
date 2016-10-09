@@ -1,7 +1,6 @@
 <?php
 namespace Admin\Controller;
-use Think\Controller;
-class RoleController extends BaseController
+class RoleController extends BaseController 
 {
     public function add()
     {
@@ -19,10 +18,11 @@ class RoleController extends BaseController
     		$this->error($model->getError());
     	}
 
-		//取出所有的权限
-		$priModel=D('Privilege');
-		$priData=$priModel->getTree();
-
+    	// 取出所有的权限
+		$priModel = D('Privilege');
+		$priData = $priModel->getTree();
+    	
+		// 设置页面中的信息
 		$this->assign(array(
 			'priData' => $priData,
 			'_page_title' => '添加角色',
@@ -50,19 +50,19 @@ class RoleController extends BaseController
     	$model = M('Role');
     	$data = $model->find($id);
     	$this->assign('data', $data);
-
-		//取出所有的权限
-		$priModel=D('Privilege');
-		$priData=$priModel->getTree();
-		//取出这个角色拥有的权限的ID
-		$rpModel=M('role_pri');
-		$priIds=$rpModel->field('GROUP_CONCAT(pri_id)pri_id')->where(array(
-			'role_id' => array('eq',$id)
+    	
+    	// 取出所有的权限
+		$priModel = D('Privilege');
+		$priData = $priModel->getTree();
+		// 取出这个角色拥有的权限的ID
+		$rpModel = M('role_pri');
+		$priIds = $rpModel->field('GROUP_CONCAT(pri_id) pri_id')->where(array(
+			'role_id' => array('eq', $id),
 		))->find();
+		
 		// 设置页面中的信息
-		$priIds=explode(',',$priIds['pri_id']);
 		$this->assign(array(
-			'priIds' => $priIds,
+			'priIds' => $priIds['pri_id'],
 			'priData' => $priData,
 			'_page_title' => '修改角色',
 			'_page_btn_name' => '角色列表',

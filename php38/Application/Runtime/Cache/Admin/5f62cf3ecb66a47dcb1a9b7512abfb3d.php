@@ -121,20 +121,20 @@ body {
     </p>
 </div>
 <?php
- $priModel=D('Privilege'); $btns=$priModel->getBtns(); ?>
+$priModel = D('Privilege'); $btns = $priModel->getBtns(); ?>
 <div id="main-div">
     <div id="menu-list">
         <ul id="menu-ul">
-            <?php foreach($btns as $k => $v): ?>
+        	<?php foreach ($btns as $k => $v): ?>
             <li class="explode">
-            <?php echo $v['pri_name'];?>
+            <?php echo $v['pri_name']; ?>
                 <ul>
-                    <?php foreach($v['children'] as $k1 => $v1) :?>
-                    <li class="menu-item"><a href="<?php echo U($v1['module_name'].'/'.$v1['controller_name'].'/'.$v1['action_name']);?>" target="main-frame"><?php echo $v1['pri_name']?></a></li>
-                    <?php endforeach;?>
+                	<?php foreach ($v['children'] as $k1 => $v1): ?>
+                    <li class="menu-item"><a href="<?php echo U($v1['module_name'].'/'.$v1['controller_name'].'/'.$v1['action_name']); ?>" target="main-frame"><?php echo $v1['pri_name']; ?></a></li>
+                   <?php endforeach; ?>
                 </ul>
             </li>
-            <?php endforeach;?>
+			<?php endforeach; ?>
         </ul>
     </div>
     <div id="help-div" style="display:none">

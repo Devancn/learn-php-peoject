@@ -1,5 +1,27 @@
 <?php
 /**
+ * 清空一个目录以及子目录下所有的文件
+ *
+ * @param unknown_type $dirName : 要删除的目录，注：必须以/结尾
+ */
+function delFile($dirName)
+{
+	$fp = opendir($dirName);
+	while ($file = readdir($fp)) 
+	{
+		if($file == '.' || $file == '..')
+			continue ;
+		if(is_dir($dirName. $file))
+		{
+			delFile($dirName. $file.'/');
+			rmdir($dirName . $file);
+		}
+		else 
+			unlink($dirName. $file);
+	}
+	closedir($fp);
+}
+/**
  * 用一个表中的数据构造下拉框
  *
  * @param unknown_type $modelName ： 模型名即表名

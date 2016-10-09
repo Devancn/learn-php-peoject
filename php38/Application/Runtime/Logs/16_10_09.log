@@ -1,0 +1,37 @@
+[ 2016-10-09T14:52:11+08:00 ] 127.0.0.1 /index.php/Admin/Goods/ajaxGetAttr/type_id/1
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000461s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000783s ]
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead I:\learn\php38\ThinkPHP\Library\Think\Db\Driver\Mysql.class.php 第 52 行.
+SQL: SHOW COLUMNS FROM `php38_privilege` [ RunTime:0.000559s ]
+SQL: SHOW COLUMNS FROM `php38_attribute` [ RunTime:0.000360s ]
+SQL: SELECT * FROM `php38_attribute` WHERE ( `type_id` = '1' )  [ RunTime:0.000255s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001023s ]
+INFO: [ app_end ] --END-- [ RunTime:0.001206s ]
+
+[ 2016-10-09T14:53:05+08:00 ] 127.0.0.1 /index.php/Admin/Goods/ajaxGetAttr/type_id/2
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000452s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000732s ]
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead I:\learn\php38\ThinkPHP\Library\Think\Db\Driver\Mysql.class.php 第 52 行.
+SQL: SHOW COLUMNS FROM `php38_privilege` [ RunTime:0.000508s ]
+SQL: SHOW COLUMNS FROM `php38_attribute` [ RunTime:0.000448s ]
+SQL: SELECT * FROM `php38_attribute` WHERE ( `type_id` = '2' )  [ RunTime:0.000260s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000477s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000556s ]
+
+[ 2016-10-09T14:54:11+08:00 ] 127.0.0.1 /index.php/Admin/Goods/ajaxDelPic/pic_id/17
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000419s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000706s ]
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead I:\learn\php38\ThinkPHP\Library\Think\Db\Driver\Mysql.class.php 第 52 行.
+SQL: SHOW COLUMNS FROM `php38_privilege` [ RunTime:0.000480s ]
+SQL: SHOW COLUMNS FROM `php38_goods_pics` [ RunTime:0.000433s ]
+SQL: SELECT * FROM `php38_goods_pics` WHERE ( `id` = 17 ) LIMIT 1   [ RunTime:0.000230s ]
+SQL: DELETE FROM `php38_goods_pics` WHERE ( `id` = 17 ) [ RunTime:0.000177s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000563s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000636s ]
+

@@ -17,4 +17,10 @@ return array(
 	'IMG_exts' => array('jpg', 'gif', 'png', 'jpeg', 'pjpeg'),
 	/*************** md5密钥 ********************/
 	'MD5_KEY' => 'fdj;sa3@329e#-1`#@2309d;lfda;peq2',
+    /************** 发邮件的配置 ***************/
+    'MAIL_ADDRESS' => 'wydingxiaohuan@163.com',   // 发货人的email
+    'MAIL_FROM' => '丁晓欢',      // 发货人姓名
+    'MAIL_SMTP' => 'smtp.163.com',      // 邮件服务器的地址
+    'MAIL_LOGINNAME' => 'wydingxiaohuan@163.com',
+    'MAIL_PASSWORD' => 'xiaohuan34644826',
 );

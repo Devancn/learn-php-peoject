@@ -263,3 +263,10 @@ CREATE TABLE php38_email_chk_code
 	primary key(chk_email_code)
 )engine=MyISAM default charset=utf8 comment '验证码';
 
+DROP TABLE IF EXISTS php38_login_error;
+CREATE TABLE php38_login_error
+(
+	ip int unsigned not null comment 'ip',
+	logtime int unsigned not null comment '登录时间',
+	key ip(ip)
+)engine=MyISAM default charset=utf8 comment '登录失败表';

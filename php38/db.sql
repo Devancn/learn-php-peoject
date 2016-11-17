@@ -238,11 +238,28 @@ CREATE TABLE php38_goods_number
 	key goods_id(goods_id)
 )engine=MyISAM default charset=utf8 comment '库存量';
 
+DROP TABLE IF EXISTS php38_menber;
+CREATE TABLE php38_menber
+(
+	id mediumint unsigned not null auto_increment comment 'Id',
+	email varchar(150) not null comment 'Email',
+	name varchar(30) not null default '' comment '昵称',
+	password char(32) not null comment '密码',
+	regtime int unsigned not null comment '注册时间',
+	regip int unsigned not null comment '注册时的ip',
+	face varchar(150) not null default '' comment '头像',
+	gender enum('男','女','保密') not null default '保密' comment '性别',
+	status tinyint unsigned not null default '0' comment '0:未验证,1:正常',
+	primary key(id),
+	key email(email)
+)engine=MyISAM default charset=utf8 comment '会员';
 
-
-
-
-
-
-
+DROP TABLE IF EXISTS php38_email_chk_code;
+CREATE TABLE php38_email_chk_code
+(
+  member_id mediumint unsigned not null comment '会员id',
+  chk_email_code char(32) not null default '' comment 'email验证码',
+	chk_email_code_time int unsigned not null comment '验证码生成时间',
+	primary key(chk_email_code)
+)engine=MyISAM default charset=utf8 comment '验证码';
 

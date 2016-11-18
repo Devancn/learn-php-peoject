@@ -89,13 +89,13 @@ class MemberModel extends Model
                     session('member_email', $email);
                     session('member_username', $user['username']);
 //                    /****** 移购物车中的数据到数据库 ************/
-                    $cartModel = D('Home/Cart');
-                    $cartModel->moveDataToDb();
-                    // 删除失败的次数记录
-                    $leModel = D('login_error');
-                    $leModel->where(array(
-                        'ip' => array('eq',  get_client_ip(1, TRUE)),
-                    ))->delete();
+//                    $cartModel = D('Home/Cart');
+//                    $cartModel->moveDataToDb();
+//                    // 删除失败的次数记录
+//                    $leModel = D('login_error');
+//                    $leModel->where(array(
+//                        'ip' => array('eq',  get_client_ip(1, TRUE)),
+//                    ))->delete();
                     return TRUE;
                 }
                 else

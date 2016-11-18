@@ -12,10 +12,27 @@ class LoginController extends Controller
         }
         $this->error($model->getError(),U('regist'));
     }
+    public function ajaxChkLogin()
+    {
+        if(session('member_id'))
+        {
+            $username = session('member_username');
+            die(json_encode(array(
+                'ok' => 1,
+                'username' => empty($username) ? session('member_email') : $username,
+            )));
+        }
+        else
+        {
+            die(json_encode(array(
+                'ok' => 0,
+            )));
+        }
+    }
     public function logout()
     {
         session(null);
-        redirect('/');
+        redirect('/');//重新跳到首页
     }
     public function login()
     {

@@ -19,7 +19,8 @@ define('APP_DEBUG',true);
 
 // 定义应用目录
 define('APP_PATH','./Application/');
-
+ini_set('session.save_handler','memcache');
+ini_set('session.save_path','192.268.56.1');
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';
 

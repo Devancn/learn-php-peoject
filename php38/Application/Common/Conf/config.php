@@ -18,8 +18,13 @@ return array(
 	/*************** md5密钥 ********************/
 	'MD5_KEY' => 'fdj;sa3@329e#-1`#@2309d;lfda;peq2',
     /************** 发邮件的配置 ***************/
+//    'MAIL_ADDRESS' => 'postmaster@iblogs.cc‍',   // 发送人的email
+//    'MAIL_FROM' => 'postmaster',      // 发送人姓名
+//    'MAIL_SMTP' => 'smtpdm.aliyun.com',      // 邮件服务器的地址
+//    'MAIL_LOGINNAME' => 'postmaster@iblogs.cc',
+//    'MAIL_PASSWORD' => 'Dxh82051',
     'MAIL_ADDRESS' => 'xldingxiaohuan@sina.com',   // 发货人的email
-    'MAIL_FROM' => '丁晓欢',      // 发货人姓名
+    'MAIL_FROM' => '丁晓欢',      // 发送人姓名
     'MAIL_SMTP' => 'smtp.sina.com',      // 邮件服务器的地址
     'MAIL_LOGINNAME' => 'xldingxiaohuan',
     'MAIL_PASSWORD' => 'xiaohuan34644826',

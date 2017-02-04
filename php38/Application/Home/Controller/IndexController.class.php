@@ -6,6 +6,7 @@ class IndexController extends Controller
 	// 首页
     public function index()
     {
+        sendMail('wydingxiaohuan@163.com','测试测试','<a href="https://www.baidu.com/">百度一下</a>');
     	$goodsModel = D('Admin/Goods');
     	$catModel = D('Admin/Category');
     	// 获取疯狂抢购

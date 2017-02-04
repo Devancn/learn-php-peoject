@@ -10,7 +10,7 @@ function sendMail($to, $title, $content)
     $mail->CharSet='UTF-8';
     // 是否需要身份验证
     $mail->SMTPAuth=TRUE;
-    /*  邮件服务器上的账号是什么 -> 到163注册一个账号即可 */
+
     $mail->From=C('MAIL_ADDRESS');
     $mail->FromName=C('MAIL_FROM');
     $mail->Host=C('MAIL_SMTP');            // 服务器IP

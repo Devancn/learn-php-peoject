@@ -238,7 +238,7 @@ class MemberModel extends Model
 	}
 	protected function _after_insert(&$data, $option){
         //生成一个email验证码[唯一的]
-        $code=md5(uniqid()).C('MD5_KEY');
+        $code=md5(uniqid());
         $model = D('email_chk_code');
         $model->add(array(
             'member_id' => $data['id'],
